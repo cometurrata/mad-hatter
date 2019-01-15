@@ -1,0 +1,8 @@
+.project
+.cproject
+*/.project
+*/.cproject
+
+node_fw/out
+
+http_server/__pycache__

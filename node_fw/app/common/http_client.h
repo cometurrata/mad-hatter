@@ -1,0 +1,9 @@
+#ifndef __HTTP_CLIENT__H__
+#define __HTTP_CLIENT__H__
+
+#include <SmingCore/SmingCore.h>
+
+void sendHttpRequest(String path, String data, RequestCompletedDelegate onHttpRequestResponse);
+void sendNodeUpdate(String data);
+
+#endif /* __HTTP_CLIENT__H__ */
