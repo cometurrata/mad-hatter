@@ -28,6 +28,7 @@ void sendKnockDetection(void)
 
 void nodeKnockDetectionInit(void)
 {
+    knockDetectionInit();
     sensorTimer.initializeMs(3 * 1000, sendKnockDetection).start();
 }
 

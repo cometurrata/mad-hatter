@@ -12,7 +12,7 @@ uint8_t i = 0;
 uint8_t data[10];
 ADXL345 adxl = ADXL345();
 
-bool doesPatternMatch(uint8_t *targetPattern, uint8_t patternLength,
+bool IRAM_ATTR doesPatternMatch(uint8_t *targetPattern, uint8_t patternLength,
                       uint32_t *receivedPattern, uint8_t tolerancePercentage);
 
 void knockDetectionSetup()
@@ -35,7 +35,7 @@ bool isKnockDetected = false;
 void pushEvent(bool knocking);
 void pushAKnock(uint32_t startTime, uint32_t endTime);
 
-uint32_t distance(int a, int b)
+uint32_t IRAM_ATTR distance(int a, int b)
 {
     int32_t diff = (int32_t)a - (int32_t)b;
     if (diff < 0)
@@ -47,7 +47,7 @@ uint32_t distance(int a, int b)
 
 uint32_t stopKnocking = 0;
 
-void loop()
+void IRAM_ATTR loop()
 {
     int x, y, z;
     adxl.readAccel(&x, &y, &z);
@@ -89,7 +89,7 @@ uint32_t knockingDuration = 0;
 uint32_t knockingStartTime = 0;
 uint32_t knockingEndTime = 0;
 
-void pushEvent(bool knocking)
+void IRAM_ATTR pushEvent(bool knocking)
 {
     if (knocking && !knockingProcessed)
     {
@@ -115,7 +115,7 @@ bool knockingMatched = false;
 uint32_t tmpStartTime = 0;
 
 uint16_t c = 0;
-void pushAKnock(uint32_t startTime, uint32_t endTime)
+void IRAM_ATTR pushAKnock(uint32_t startTime, uint32_t endTime)
 {
     debugf("Push a Knock %d", c++);
     if (tmpStartTime == 0)
@@ -149,7 +149,7 @@ void pushAKnock(uint32_t startTime, uint32_t endTime)
             Serial.println("");
             for (int i = 0; i < 5; i++)
             {
-                uint32_t unit =  knockArray[0] / knockPattern[0] ;
+                uint32_t unit = knockArray[0] / knockPattern[0];
                 Serial.print(knockPattern[i] * unit);
                 Serial.print(", ");
             }
@@ -162,13 +162,13 @@ void pushAKnock(uint32_t startTime, uint32_t endTime)
     }
 }
 
-uint32_t applyPercentage(uint32_t val, int8_t percent)
+uint32_t IRAM_ATTR applyPercentage(uint32_t val, int8_t percent)
 {
     return ((val * (100 + percent)) / 100);
 }
 
-bool doesPatternMatch(uint8_t *targetPattern, uint8_t patternLength,
-                      uint32_t *receivedPattern, uint8_t tolerancePercentage)
+bool IRAM_ATTR doesPatternMatch(uint8_t *targetPattern, uint8_t patternLength,
+                                uint32_t *receivedPattern, uint8_t tolerancePercentage)
 {
     uint32_t unit = receivedPattern[0] / targetPattern[0];
     if (patternLength < 2)
@@ -202,7 +202,7 @@ uint32_t filter(uint32_t cumAbsDiff, uint16_t oldWeight, uint16_t newAbsDiff)
     return cumAbsDiff + newAbsDiff;
 }
 
-void knockDetectionInit()
+void IRAM_ATTR knockDetectionInit()
 {
     knockDetectionSetup();
     for (int i = 0; i < 6; i++)
@@ -217,4 +217,3 @@ bool getKnockDetected()
 {
     return isKnockDetected;
 }
-
