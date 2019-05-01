@@ -3,7 +3,7 @@
 #####################################################################
 # Including user Makefile.
 # Should be used to set project-specific parameters
-include ./Makefile-user.mk
+include ../Makefile-user.mk
 # Including env Makefile.
 include ./Makefile-env.mk
 
