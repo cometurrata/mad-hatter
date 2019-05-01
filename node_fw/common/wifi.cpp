@@ -1,9 +1,9 @@
 #include <user_config.h>
 #include <SmingCore/SmingCore.h>
 
-#include "common/wifi.h"
-#include "common/node_register.h"
-#include "project/http_server.h"
+#include "wifi.h"
+#include "node_register.h"
+#include "http_server.h"
 
 // Will be called when WiFi station was connected to AP
 static void connectOk(IPAddress ip, IPAddress mask, IPAddress gateway)

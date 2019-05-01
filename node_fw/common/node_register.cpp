@@ -2,8 +2,8 @@
 #include <user_config.h>
 #include <SmingCore/SmingCore.h>
 
-#include "common/http_client.h"
-#include "common/node_register.h"
+#include "http_client.h"
+#include "node_register.h"
 
 static Timer retryTimer;
 

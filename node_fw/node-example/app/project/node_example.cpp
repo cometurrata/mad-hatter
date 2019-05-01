@@ -2,7 +2,7 @@
 #include <user_config.h>
 #include <SmingCore/SmingCore.h>
 
-#include "common/http_client.h"
+#include "http_client.h"
 
 static Timer sensorTimer;
 static Timer heartBeatTimer;

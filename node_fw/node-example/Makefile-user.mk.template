@@ -18,13 +18,13 @@ ESP_HOME = /Volumes/case-sensitive/opt/esp-open-sdk
 
 ## SMING_HOME sets the path where Sming framework is located.
 ## Windows:
-# SMING_HOME = c:/tools/sming/Sming 
+# SMING_HOME = c:/tools/sming/Sming
 
 ## MacOS / Linux
 SMING_HOME = /Volumes/case-sensitive/opt/Sming/Sming
 
 ## COM port parameter is reqruied to flash firmware correctly.
-## Windows: 
+## Windows:
 # COM_PORT = COM3
 
 ## MacOS / Linux:
@@ -37,10 +37,10 @@ COM_SPEED_ESPTOOL  = 115200
 COM_SPEED_SERIAL = $(COM_SPEED)
 
 ## SPIFFS options
-# DISABLE_SPIFFS = 1
+DISABLE_SPIFFS = 1
 # SPIFF_FILES = files
 
-ENABLE_ESPCONN = 1
+ENABLE_ESPCONN = 0
 
 # Use minicom as terminal
 TERMINAL = minicom -D $(COM_PORT) -b $(COM_SPEED_SERIAL) /Volumes/case-sensitive/opt/minicom.config

@@ -1,8 +1,4 @@
-#include <stdint.h>
-#include <user_config.h>
-#include <SmingCore/SmingCore.h>
-
-#include "common/http_client.h"
+#include "http_client.h"
 
 static HttpServer server;
 static Timer trigger_timer;
@@ -168,4 +164,9 @@ void startWebServer(void)
     server.setDefaultHandler(onDefault);
 
     trigger_timer.initializeMs(100, trigger_task).start();
+}
+
+void httpServerAddPath(String path, const HttpPathDelegate &callback )
+{
+    server.addPath(path, callback);
 }

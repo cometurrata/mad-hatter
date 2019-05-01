@@ -7,24 +7,16 @@ static HttpClient httpClient;
 void sendHttpRequest(String path, String data, RequestCompletedDelegate onHttpRequestResponse)
 {
     HttpRequest *postRequest = new HttpRequest(URL(String("http://" SERVER_IP "/") + path));
-    postRequest->setMethod(HTTP_POST);
 
-    // Headers: if you need to set custom headers then you can do something like ...
     HttpHeaders headers;
-    headers[HTTP_HEADER_USER_AGENT] = _F("HttpClient/Sming"); // Prefer use of enumerated type for standard field names
-    headers[F("X-Powered-By")] = _F("Sming");                 // Use text for non-standard field names
-    postRequest->setHeaders(headers);
-    postRequest->setHeader(F("X-Powered-By"), F("Sming"));
-    postRequest->setBody(data);
-    /*
-	 * Notice: If we use SSL we need to set the SSL settings only for the first request
-	 * 		   and all consecutive requests to the same host:port will try to reuse those settings
-	 */
+    headers["User-Agent"] = "HttpClient/Sming"; // Prefer use of enumerated type for standard field names
+    headers["X-Powered-By"] = "Sming";          // Use text for non-standard field names
 
-    // If we want to process the response we can do it by setting a onRequestCallback
-    postRequest->onRequestComplete(onHttpRequestResponse);
+    postRequest->setMethod(HTTP_POST)
+        ->setHeaders(headers)
+        ->setBody(data)
+        ->onRequestComplete(onHttpRequestResponse);
 
-    // Second: We have to send that request using our httpClient
     bool success = httpClient.send(postRequest);
     if (success)
     {
@@ -39,7 +31,6 @@ void sendHttpRequest(String path, String data, RequestCompletedDelegate onHttpRe
 static int onNodeUpdateRequestResponse(HttpConnection &connection, bool success)
 {
     debugf("\n=========[ URL: %s ]============", connection.getRequest()->uri.toString().c_str());
-    debugf("RemoteIP: %s", (char *)connection.getRemoteIp());
     debugf("Got response code: %d", connection.getResponseCode());
     debugf("Success: %d", success);
     if (connection.getRequest()->method != HTTP_HEAD)

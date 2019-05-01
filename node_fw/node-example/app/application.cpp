@@ -3,7 +3,8 @@
 #include <user_config.h>
 #include <SmingCore/SmingCore.h>
 
-#include "common/wifi.h"
+#include "wifi.h"
+#include "http_server.h"
 //  --------- EXAMPLE CODE -----------
 #include "project/node_example.h"
 
