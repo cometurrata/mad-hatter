@@ -5,5 +5,6 @@
 
 void sendHttpRequest(String path, String data, RequestCompletedDelegate onHttpRequestResponse);
 void sendNodeUpdate(String data);
+void sendHeartBeat(void);
 
 #endif /* __HTTP_CLIENT__H__ */

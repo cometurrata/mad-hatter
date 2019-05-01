@@ -7,25 +7,28 @@
 
 static Timer retryTimer;
 
-static int onRegisterNodeRequestResponse(HttpConnection& connection, bool success)
+static int onRegisterNodeRequestResponse(HttpConnection &connection, bool success)
 {
-        if (!success) {
-                debugf("HTTP Register FAILURE\n");
-                retryTimer.initializeMs(10000, registerNode).startOnce();
-        }
-        else {
-                debugf("HTTP Register SUCCESS\n");
-        }
+    if (!success)
+    {
+        debugf("HTTP Register FAILURE\n");
+        retryTimer.initializeMs(10000, registerNode).startOnce();
+    }
+    else
+    {
+        debugf("HTTP Register SUCCESS\n");
+    }
 
-        return 0;
+    return 0;
 }
 
 void registerNode(void)
 {
-        String register_data = "{"
-                                "ip:"+WifiStation.getIP().toString()+
-                                ",hostname:\"" NODE_HOSTNAME "\""
-                                "}";
+    String register_data = "{"
+                           "\"ip\":\"" +
+                           WifiStation.getIP().toString() +
+                           "\",\"hostname\":\"" NODE_HOSTNAME "\""
+                           "}";
 
-        sendHttpRequest("register", register_data, onRegisterNodeRequestResponse);
+    sendHttpRequest("register", register_data, onRegisterNodeRequestResponse);
 }

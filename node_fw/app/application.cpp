@@ -7,7 +7,8 @@
 //  --------- EXAMPLE CODE -----------
 #include "project/node_example.h"
 
-static void ShowInfo() {
+static void ShowInfo()
+{
     Serial.printf("\r\nSDK: v%s\r\n", system_get_sdk_version());
     Serial.printf("Free Heap: %d\r\n", system_get_free_heap_size());
     Serial.printf("CPU Frequency: %d MHz\r\n", system_get_cpu_freq());
@@ -21,25 +22,24 @@ static void ShowInfo() {
 // And system initialization was completed
 static void ready()
 {
-	debugf("READY!");
+    debugf("READY!");
 
-	ShowInfo();
+    ShowInfo();
 
-	// Init wifi
-	wifiStart();
+    // Init wifi
+    wifiStart();
 
-	//  --------- EXAMPLE CODE -----------
-	nodeExampleInit();
+    //  --------- EXAMPLE CODE -----------
+    nodeExampleInit();
+    nodeHeartBeatInit();
 }
 
 void init()
 {
-	spiffs_mount();
+    Serial.begin(SERIAL_BAUD_RATE, SERIAL_8N1, SERIAL_FULL); // 115200 by default
+    Serial.systemDebugOutput(true);                          // Enable debug output to serial
+    Serial.println("Sming. Let's do smart things!");
 
-	Serial.begin(SERIAL_BAUD_RATE, SERIAL_8N1, SERIAL_FULL);  // 115200 by default
-	Serial.systemDebugOutput(true); // Enable debug output to serial
-	Serial.println("Sming. Let's do smart things!");
-
-	// Set system ready callback method
-	System.onReady(ready);
+    // Set system ready callback method
+    System.onReady(ready);
 }
