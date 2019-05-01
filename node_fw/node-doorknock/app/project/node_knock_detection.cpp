@@ -8,16 +8,17 @@
 static Timer sensorTimer;
 static Timer heartBeatTimer;
 
-bool infoSent;
+bool infoSent = false;
 
 void sendKnockDetection(void)
 {
     if (getKnockDetected())
     {
+        // debugf("Knock Detected");
         if (!infoSent)
         {
             infoSent = true;
-            sendNodeUpdate("knockdetected");
+            sendNodeUpdate("event");
         }
     }
     else
@@ -29,10 +30,12 @@ void sendKnockDetection(void)
 void nodeKnockDetectionInit(void)
 {
     knockDetectionInit();
-    sensorTimer.initializeMs(3 * 1000, sendKnockDetection).start();
+    pinMode(0, OUTPUT);
+    digitalWrite(0, HIGH);
+    sensorTimer.initializeMs(100, sendKnockDetection).start();
 }
 
 void nodeHeartBeatInit()
 {
-    heartBeatTimer.initializeMs(30 * 1000, [] { sendHeartBeat(); });
+    heartBeatTimer.initializeMs(30 * 1000, [] { sendHeartBeat(); }).start();
 }

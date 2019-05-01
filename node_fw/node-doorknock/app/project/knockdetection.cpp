@@ -82,6 +82,8 @@ void IRAM_ATTR loop()
     {
         // debugf("val : %d", filteredValue);
     }
+    // debugf("x : %d", x);
+
 }
 
 bool knockingProcessed = false;
@@ -105,7 +107,7 @@ void IRAM_ATTR pushEvent(bool knocking)
     }
 }
 
-uint8_t knockPattern[10] = {20, 10, 10, 20, 40, 20, 20};
+uint8_t knockPattern[10] = {20, 10, 10, 10, 10, 10, 10};
 uint8_t knockPatternLength = 7;
 uint8_t knockIndex = 0;
 uint32_t knockArray[7];
@@ -125,29 +127,29 @@ void IRAM_ATTR pushAKnock(uint32_t startTime, uint32_t endTime)
     }
     else
     {
-        if (doesPatternMatch(knockPattern, 5, knockArray, 20))
+        if (doesPatternMatch(knockPattern, knockPatternLength - 2, knockArray, 20))
         {
             debugf("Success");
             isKnockDetected = true;
         }
         else
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < knockPatternLength - 2; i++)
             {
                 knockArray[i] = knockArray[i + 1];
             }
-            knockArray[5] = startTime - tmpStartTime;
+            knockArray[knockPatternLength - 2] = startTime - tmpStartTime;
             tmpStartTime = startTime;
 
             Serial.println("");
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < knockPatternLength - 2; i++)
             {
                 Serial.print(knockArray[i]);
                 Serial.print(", ");
             }
             Serial.println("");
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < knockPatternLength - 2; i++)
             {
                 uint32_t unit = knockArray[0] / knockPattern[0];
                 Serial.print(knockPattern[i] * unit);
@@ -155,9 +157,10 @@ void IRAM_ATTR pushAKnock(uint32_t startTime, uint32_t endTime)
             }
             Serial.println("");
         }
-        if (doesPatternMatch(knockPattern, 5, knockArray, 20))
+        if (doesPatternMatch(knockPattern, knockPatternLength - 2, knockArray, 20))
         {
             debugf("Success");
+            isKnockDetected = true;
         }
     }
 }
@@ -197,7 +200,7 @@ bool IRAM_ATTR doesPatternMatch(uint8_t *targetPattern, uint8_t patternLength,
     return true;
 }
 
-uint32_t filter(uint32_t cumAbsDiff, uint16_t oldWeight, uint16_t newAbsDiff)
+uint32_t IRAM_ATTR filter(uint32_t cumAbsDiff, uint16_t oldWeight, uint16_t newAbsDiff)
 {
     return cumAbsDiff + newAbsDiff;
 }
@@ -211,6 +214,7 @@ void IRAM_ATTR knockDetectionInit()
     }
     adxl.readAccel(&prevx, &prevy, &prevz);
     procTimer.initializeMs(3, loop).start();
+    debugf("Knock detection initilised");
 }
 
 bool getKnockDetected()

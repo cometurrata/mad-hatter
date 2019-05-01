@@ -8,6 +8,8 @@ void sendHttpRequest(String path, String data, RequestCompletedDelegate onHttpRe
 {
     HttpRequest *postRequest = new HttpRequest(URL(String("http://" SERVER_IP "/") + path));
 
+    debugf("Sending request to : %s", "http://" SERVER_IP "/");
+
     HttpHeaders headers;
     headers["User-Agent"] = "HttpClient/Sming"; // Prefer use of enumerated type for standard field names
     headers["X-Powered-By"] = "Sming";          // Use text for non-standard field names

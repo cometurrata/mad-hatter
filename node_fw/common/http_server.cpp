@@ -67,6 +67,7 @@ void onReadPin(HttpRequest &request, HttpResponse &response)
 {
     debugf("onReadPin\n");
     int pin = request.getQueryParameter("pin").toInt();
+    pinMode(pin, INPUT);
     int value = digitalRead(pin);
 
     response.code = HTTP_STATUS_OK;
@@ -83,6 +84,7 @@ void onWritePin(HttpRequest &request, HttpResponse &response)
     int pin = request.getQueryParameter("pin").toInt();
     int value = request.getQueryParameter("value").toInt();
 
+    pinMode(pin, OUTPUT);
     digitalWrite(pin, value);
 
     response.code = HTTP_STATUS_OK;
