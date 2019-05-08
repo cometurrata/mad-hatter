@@ -1,28 +1,22 @@
 #include <user_config.h>
 #include <SmingCore/SmingCore.h>
-#include "LSM9DS1.h"
+#include <Wire.h>
+#include <HMC5883L.h>
 
-#define I2C_AXL_GYR_ADDRESS (0x6b)
-#define I2C_MAGNETOMETER_ADDRESS (0x1e)
+HMC5883L compass;
 
 // class default I2C address is 0x1E
 // specific I2C addresses may be passed as a parameter here
 // this device only supports one I2C address (0x1E)
 int16_t mx, my, mz;
-LSM9DS1 imu;
 Timer procTimer;
-Timer imuTaskTimer;
-
-#define LSM9DS1_INT 4 // Needs to be an interrupt pin
 
 uint32_t val = 1;
 
-void imuTask()
+void task()
 {
-    imu.readMag();
-
-    uint32_t tmp = abs(imu.mz);
-
+    compass.read(&mx, &my, &mz);
+    uint32_t tmp = abs(mz);
     val = (tmp * 3 + val * 7) / 10;
 }
 
@@ -39,14 +33,13 @@ void clockInit()
     Wire.begin();
     Wire.setClock(400000); // I2C frequency at 400 kHz
 
-    imu.init(IMU_MODE_I2C, LSM9DS1_AG_ADDR(1), LSM9DS1_M_ADDR(1));
-    if (0 == imu.begin())
+    if (!compass.begin())
     {
-        Serial.println("Failed to communicate with LSM9DS1.");
+        Serial.println("Could not find a valid HMC5883L sensor, check wiring!");
     }
-
-    imu.setMagScale(2);
-    imu.setMagODR(7);
-
-    procTimer.initializeMs(20, imuTask).start();
+    compass.setRange(HMC5883L_RANGE_1_3GA);
+    compass.setMeasurementMode(HMC5883L_CONTINOUS);
+    compass.setDataRate(HMC5883L_DATARATE_75HZ);
+    compass.setSamples(HMC5883L_SAMPLES_8);
+    procTimer.initializeMs(20, task).start();
 }
