@@ -2,7 +2,7 @@
 .cproject
 */.project
 */.cproject
-
+.vscode
 node_fw/out
 
 http_server/__pycache__
