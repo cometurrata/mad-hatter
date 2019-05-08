@@ -6,9 +6,10 @@ static HttpClient httpClient;
 
 void sendHttpRequest(String path, String data, RequestCompletedDelegate onHttpRequestResponse)
 {
-    HttpRequest *postRequest = new HttpRequest(URL(String("http://" SERVER_IP "/") + path));
+    String serverAddress = "http://" SERVER_IP "/";
+    HttpRequest *postRequest = new HttpRequest(URL(serverAddress + path));
 
-    debugf("Sending request to : %s", "http://" SERVER_IP "/");
+    debugf("Sending request to : %s", serverAddress.c_str());
 
     HttpHeaders headers;
     headers["User-Agent"] = "HttpClient/Sming"; // Prefer use of enumerated type for standard field names
