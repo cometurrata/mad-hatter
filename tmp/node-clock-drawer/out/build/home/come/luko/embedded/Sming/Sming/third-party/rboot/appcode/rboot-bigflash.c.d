@@ -1,0 +1,29 @@
+/home/come/luko/embedded/Sming/Sming/third-party/rboot/appcode/rboot-bigflash.o: \
+ /home/come/luko/embedded/Sming/Sming/third-party/rboot/appcode/rboot-bigflash.c \
+ /home/come/luko/embedded/Sming/Sming/system/include/rboot-integration.h \
+ /home/come/luko/embedded/Sming/Sming/system/include/esp_systemapi.h \
+ /home/come/luko/embedded/Sming/Sming/third-party/ESP8266_NONOS_SDK/include/ets_sys.h \
+ /home/come/luko/embedded/Sming/Sming/third-party/ESP8266_NONOS_SDK/include/c_types.h \
+ /home/come/luko/embedded/Sming/Sming/third-party/ESP8266_NONOS_SDK/include/eagle_soc.h \
+ /home/come/luko/embedded/Sming/Sming/third-party/ESP8266_NONOS_SDK/include/osapi.h \
+ /home/come/luko/embedded/Sming/Sming/third-party/ESP8266_NONOS_SDK/include/os_type.h \
+ /home/come/luko/embedded/Sming/Sming/third-party/ESP8266_NONOS_SDK/include/ets_sys.h \
+ include/user_config.h \
+ /home/come/luko/embedded/Sming/Sming/third-party/ESP8266_NONOS_SDK/include/gpio.h \
+ /home/come/luko/embedded/Sming/Sming/third-party/ESP8266_NONOS_SDK/include/os_type.h \
+ /home/come/luko/embedded/Sming/Sming/third-party/ESP8266_NONOS_SDK/include/user_interface.h \
+ /home/come/luko/embedded/Sming/Sming/third-party/ESP8266_NONOS_SDK/include/ip_addr.h \
+ /home/come/luko/embedded/Sming/Sming/third-party/ESP8266_NONOS_SDK/include/queue.h \
+ /home/come/luko/embedded/Sming/Sming/third-party/ESP8266_NONOS_SDK/include/spi_flash.h \
+ /home/come/luko/embedded/Sming/Sming/third-party/ESP8266_NONOS_SDK/include/gpio.h \
+ /home/come/luko/embedded/Sming/Sming/third-party/ESP8266_NONOS_SDK/include/spi_flash.h \
+ /home/come/luko/embedded/Sming/Sming/third-party/ESP8266_NONOS_SDK/include/espconn.h \
+ /home/come/luko/embedded/Sming/Sming/system/include/espinc/uart.h \
+ /home/come/luko/embedded/Sming/Sming/system/include/espinc/uart_register.h \
+ /home/come/luko/embedded/Sming/Sming/system/include/espinc/spi_register.h \
+ /home/come/luko/embedded/Sming/Sming/system/include/m_printf.h \
+ /home/come/luko/embedded/Sming/Sming/system/include/debug_progmem.h \
+ /home/come/luko/embedded/Sming/Sming/Wiring/FakePgmSpace.h \
+ /home/come/luko/embedded/Sming/Sming/system/include/m_printf.h \
+ /home/come/luko/embedded/Sming/Sming/system/include/stringutil.h \
+ /home/come/luko/embedded/Sming/Sming/third-party/rboot/rboot.h
