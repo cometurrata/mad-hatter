@@ -1,7 +1,10 @@
 #include <user_config.h>
 #include <SmingCore/SmingCore.h>
 
-#include "SparkFun_ADXL345.h"
+#include "LSM9DS1.h"
+#include "MPU6050.h"
+#define I2C_AXL_GYR_ADDRESS (0x6b)
+#define I2C_MAGNETOMETER_ADDRESS (0x1e)
 
 #define SDA_PIN 4
 #define SCL_PIN 5
@@ -10,16 +13,25 @@ Timer procTimer;
 
 uint8_t i = 0;
 uint8_t data[10];
-ADXL345 adxl = ADXL345();
+LSM9DS1 imu;
+
+MPU6050 mpu;
 
 bool IRAM_ATTR doesPatternMatch(uint8_t *targetPattern, uint8_t patternLength,
-                      uint32_t *receivedPattern, uint8_t tolerancePercentage);
+                                uint32_t *receivedPattern, uint8_t tolerancePercentage);
 
 void knockDetectionSetup()
 {
-    Wire.pins(SDA_PIN, SCL_PIN);
-    adxl.powerOn();
-    adxl.setRangeSetting(2);
+    Wire.pins(4, 5); // SDA, SCL
+
+    // join I2C bus (I2Cdev library doesn't do this automatically)
+    Wire.begin();
+    Wire.setClock(400000); // I2C frequency at 400 kHz
+
+    if (!mpu.begin(MPU6050_SCALE_2000DPS, MPU6050_RANGE_2G))
+    {
+        Serial.println("Failed to communicate with LSM9DS1.");
+    }
 }
 
 int prevx, prevy, prevz;
@@ -27,8 +39,8 @@ int prevx, prevy, prevz;
 uint32_t filteredValue = 0;
 uint32_t presentWeight = 4;
 uint32_t pastWeight = 7;
-uint32_t thresholdHigh = 17;
-uint32_t thresholdLow = 3;
+uint32_t thresholdHigh = 4000;
+uint32_t thresholdLow = 400;
 
 bool isKnockDetected = false;
 
@@ -49,8 +61,8 @@ uint32_t stopKnocking = 0;
 
 void IRAM_ATTR loop()
 {
-    int x, y, z;
-    adxl.readAccel(&x, &y, &z);
+    int16_t x, y, z;
+    mpu.readAccel(&x, &y, &z);
 
     static bool isKnocking = false;
 
@@ -78,12 +90,11 @@ void IRAM_ATTR loop()
     prevx = x;
     prevy = y;
     prevz = z;
-    if (filteredValue > 3)
-    {
-        // debugf("val : %d", filteredValue);
-    }
+    // if (filteredValue > 3)
+    // {
+    //     // debugf("val : %d", filteredValue);
+    // }
     // debugf("x : %d", x);
-
 }
 
 bool knockingProcessed = false;
@@ -212,7 +223,13 @@ void IRAM_ATTR knockDetectionInit()
     {
         knockArray[i] = 200;
     }
-    adxl.readAccel(&prevx, &prevy, &prevz);
+
+    Vector_t a = mpu.readRawAccel();
+
+    prevx = a.XAxis;
+    prevy = a.YAxis;
+    prevz = a.ZAxis;
+
     procTimer.initializeMs(3, loop).start();
     debugf("Knock detection initilised");
 }

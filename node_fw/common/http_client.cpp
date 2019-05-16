@@ -51,5 +51,5 @@ void sendNodeUpdate(String data)
 
 void sendHeartBeat()
 {
-    sendHttpRequest(String(NODE_HOSTNAME) + "/alive", "heartbeat", onNodeUpdateRequestResponse);
+    sendHttpRequest( String(NODE_HOSTNAME) + "/alive", "heartbeat", onNodeUpdateRequestResponse);
 }
