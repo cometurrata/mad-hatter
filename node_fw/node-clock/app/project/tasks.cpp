@@ -13,7 +13,7 @@ uint32_t threshold = 15000;
 void sensorTask()
 {
     uint32_t val = clockGetVal();
-
+    debugf("val:%lu", val);
     if (val > threshold)
     {
         sendNodeUpdate("Clock is Well set");
@@ -22,6 +22,7 @@ void sensorTask()
 
 void nodeClockInit(void)
 {
+    clockInit();
     sensorTimer.initializeMs(3 * 1000, sensorTask).start();
 }
 
