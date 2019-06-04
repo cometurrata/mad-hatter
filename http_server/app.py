@@ -3,8 +3,14 @@ from flask import request
 import requests
 app = Flask(__name__)
 
-@app.route('/register', methods=['POST'])
-def register():
+@app.route('/register/<node>', methods=['POST'])
+def register(node):
+    print("name : ", node , '\tip:', request.remote_addr )
+    return 'REGISTER SUCCESS'
+
+@app.route('/<node>/alive', methods=['POST'])
+def alive(node):
+    print("name : ", node , '\tip:', request.remote_addr )
     return 'REGISTER SUCCESS'
 
 @app.route('/<node>', methods=['POST'])
