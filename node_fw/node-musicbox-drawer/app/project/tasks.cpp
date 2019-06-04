@@ -6,8 +6,6 @@
 
 static Timer heartBeatTimer;
 
-uint32_t threshold = 15000;
-
 void nodeHeartBeatInit()
 {
     heartBeatTimer.initializeMs(30 * 1000, sendHeartBeat);
