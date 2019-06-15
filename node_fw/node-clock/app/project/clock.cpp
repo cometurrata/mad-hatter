@@ -8,17 +8,24 @@ MechaQMC5883 qmc;
 int mx, my, mz;
 Timer procTimer;
 
-uint32_t val = 1;
+int32_t val = 1;
+
+int pastWeight = 100;
+int presentWeight = 3;
 
 void task()
 {
+    static int i = 0;
     qmc.read(&mx, &my, &mz);
-    uint32_t tmp = abs(mz);
-    val = (tmp * 5 + val * 95) / 100;
-    debugf("%d ", val);
+    int32_t tmp = mz;
+    val = (tmp * presentWeight + val * pastWeight) / (pastWeight + presentWeight);
+    if (!((i++) % 10))
+    {
+        debugf("%d ", val);
+    }
 }
 
-uint32_t clockGetVal()
+int32_t clockGetVal()
 {
     return val;
 }

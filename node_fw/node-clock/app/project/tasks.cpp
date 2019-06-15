@@ -8,13 +8,13 @@
 static Timer sensorTimer;
 static Timer heartBeatTimer;
 
-uint32_t threshold = 15000;
+int32_t threshold = -32500;
 
 void sensorTask()
 {
-    uint32_t val = clockGetVal();
+    int32_t val = clockGetVal();
     debugf("val:%lu", val);
-    if (val > threshold)
+    if (val < threshold)
     {
         sendNodeUpdate("Clock is Well set");
     }
