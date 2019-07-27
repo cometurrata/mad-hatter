@@ -48,7 +48,7 @@ static Timer heartBeatTimer;
 
 void nodeHeartBeatInit()
 {
-    heartBeatTimer.initializeMs(30 * 1000, [] { sendHeartBeat(); }).start();
+    heartBeatTimer.initializeMs(30 * 1000, sendHeartBeat();).start();
 }
 
 void shroomInit()

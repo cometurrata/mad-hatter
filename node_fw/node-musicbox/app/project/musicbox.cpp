@@ -29,7 +29,7 @@ typedef enum Notes
     NOTE_MAX
 } notes_t;
 
-uint8_t* order = { DO, RE };
+uint8_t order[] = { DO, RE, NOTE_MAX };
 uint8_t nextNote = 0;
 
 void task()
@@ -54,7 +54,7 @@ void task()
         }
     }
 
-    if (nextNote == MAX_NB_OF_NOTES)
+    if (nextNote == sizeof(order))
     {
         done = true;
     }
@@ -74,7 +74,6 @@ bool musicBoxGetValidated()
 void musicBoxInit()
 {
     Wire.pins(4, 5); // SDA, SCL
-
     // join I2C bus (I2Cdev library doesn't do this automatically)
     Wire.begin();
     Wire.setClock(400000); // I2C frequency at 400 kHz

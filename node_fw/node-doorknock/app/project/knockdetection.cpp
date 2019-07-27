@@ -1,8 +1,8 @@
 #include <user_config.h>
 #include <SmingCore/SmingCore.h>
 
-#include "LSM9DS1.h"
-#include "MPU6050.h"
+// #include "LSM9DS1.h"
+// #include "MPU6050.h"
 #define I2C_AXL_GYR_ADDRESS (0x6b)
 #define I2C_MAGNETOMETER_ADDRESS (0x1e)
 
