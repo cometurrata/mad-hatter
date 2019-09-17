@@ -148,27 +148,27 @@ void onRemoveTriggerPin(HttpRequest &request, HttpResponse &response)
 
 static void onDefault(HttpRequest &request, HttpResponse &response)
 {
-    debugf("Unknown path requested: %s\n", request.getPath().c_str());
-    response.notFound();
+    debugf("Unknown path requested: %s\n", request.uri.Path.c_str());
+    response.code = HTTP_STATUS_NOT_FOUND;
 }
 
 void startWebServer(void)
 {
     debugf("==== STARTING WEB SERVER ====\n");
     server.listen(80);
-    server.addPath("/", onIndex);
-    server.addPath("/configure-pin", onConfigurePin);
-    server.addPath("/read-pin", onReadPin);
-    server.addPath("/write-pin", onWritePin);
-    server.addPath("/add-trigger", onAddTriggerPin);
-    server.addPath("/remove-trigger", onRemoveTriggerPin);
+    server.paths.set("/", onIndex);
+    server.paths.set("/configure-pin", onConfigurePin);
+    server.paths.set("/read-pin", onReadPin);
+    server.paths.set("/write-pin", onWritePin);
+    server.paths.set("/add-trigger", onAddTriggerPin);
+    server.paths.set("/remove-trigger", onRemoveTriggerPin);
 
-    server.setDefaultHandler(onDefault);
+    server.paths.setDefault(onDefault);
 
     trigger_timer.initializeMs(100, trigger_task).start();
 }
 
 void httpServerAddPath(String path, const HttpPathDelegate &callback )
 {
-    server.addPath(path, callback);
+    server.paths.set(path, callback);
 }
