@@ -22,5 +22,5 @@ void nodeExampleInit(void)
 
 void nodeHeartBeatInit()
 {
-    heartBeatTimer.initializeMs(30 * 1000, [] { sendHeartBeat(); });
+    heartBeatTimer.initializeMs(30 * 1000, sendHeartBeat);
 }

@@ -34,11 +34,11 @@ void sendHttpRequest(String path, String data, RequestCompletedDelegate onHttpRe
 static int onNodeUpdateRequestResponse(HttpConnection &connection, bool success)
 {
     debugf("\n=========[ URL: %s ]============", connection.getRequest()->uri.toString().c_str());
-    debugf("Got response code: %d", connection.getResponseCode());
+    debugf("Got response code: %d", connection.getResponse()->code);
     debugf("Success: %d", success);
     if (connection.getRequest()->method != HTTP_HEAD)
     {
-        debugf("Got content starting with: %s", connection.getResponseString().substring(0, 1000).c_str());
+        debugf("Got content starting with: %s", connection.getResponse()->getBody().substring(0, 1000).c_str());
     }
 
     return 0; // return 0 on success in your callbacks
