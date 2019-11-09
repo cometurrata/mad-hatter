@@ -5,28 +5,31 @@
 # Including board Makefile.
 # include ./Makefile-board.mk
 
-USER_CFLAGS += -DSERVER_IP=\"192.168.0.101\"
-USER_CFLAGS += -DWIFI_SSID=\"192.168.0.101\"
-USER_CFLAGS += -DWIFI_PASSWORD=\"192.168.0.101\"
+# COMPONENT_CFLAGS :=
+# COMPONENT_CXXFLAGS :=
+
+
+COMPONENT_CFLAGS += -DSERVER_IP=\"192.168.0.101\"
+COMPONENT_CFLAGS += -DWIFI_SSID=\"192.168.0.101\"
+COMPONENT_CFLAGS += -DWIFI_PASSWORD=\"192.168.0.101\"
 
 ## Add your source directories here separated by space
-MODULES = app app/project ../common
-# EXTRA_INCDIR = include
+
+COMPONENT_SRCDIRS := app app/project ../common
+COMPONENT_SRCFILES :=
+COMPONENT_INCDIRS := ../common
+
 
 ## ESP_HOME sets the path where ESP tools and SDK are located.
 ## Windows:
 # ESP_HOME = c:/Espressif
-
-## MacOS / Linux:
-ESP_HOME = /opt/esp-open-sdk
 
 ## SMING_HOME sets the path where Sming framework is located.
 ## Windows:
 # SMING_HOME = c:/tools/sming/Sming
 
 ## MacOS / Linux
-SMING_HOME = /Users/macbookair/Documents/Sming/Sming
-SDK_BASE = $(SMING_HOME)/third-party/ESP8266_NONOS_SDK
+SMING_HOME = /home/come/escape-game/Sming/Sming
 
 ## COM port parameter is reqruied to flash firmware correctly.
 ## Windows:
@@ -34,11 +37,11 @@ SDK_BASE = $(SMING_HOME)/third-party/ESP8266_NONOS_SDK
 
 ## MacOS / Linux:
 #COM_PORT = /dev/ttyUSB0
-COM_PORT = /dev/tty.usbserial-
+COM_PORT = /dev/ttyUSB0
 
 ## Com port speed
-#COM_SPEED_ESPTOOL  = 460800
-COM_SPEED_ESPTOOL  = 115200
+COM_SPEED_ESPTOOL  = 1500000 	# Linux
+# COM_SPEED_ESPTOOL  = 115200	# Mac
 COM_SPEED_SERIAL = $(COM_SPEED)
 
 ## SPIFFS options
@@ -46,7 +49,6 @@ DISABLE_SPIFFS = 1
 CUSTOM_HEAP = 1
 ENABLE_ESPCONN = 0
 # SPIFF_FILES = files
-
 
 # # Use minicom as terminal
 # TERMINAL = minicom -D $(COM_PORT) -b $(COM_SPEED_SERIAL) /Volumes/case-sensitive/opt/minicom.config
