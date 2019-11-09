@@ -1,23 +1,27 @@
-#include <user_config.h>
-#include <SmingCore/SmingCore.h>
+#include <SmingCore.h>
 
 #include "wifi.h"
 #include "node_register.h"
 #include "http_server.h"
 
 // Will be called when WiFi station was connected to AP
-static void connectOk(IPAddress ip, IPAddress mask, IPAddress gateway)
+void connectOk(IpAddress ip, IpAddress mask, IpAddress gateway)
 {
+    Serial.print(_F("I'm CONNECTED to "));
+    Serial.println(ip);
     debugf("AP. ip: %s mac: %s hostname: %s", WifiStation.getIP().toString().c_str(), WifiStation.getMAC().c_str(), WifiStation.getHostname().c_str());
     startWebServer();
     registerNode();
 }
 
 // Will be called when WiFi station was disconnected
-static void connectFail(String ssid, uint8_t ssidLength, uint8_t *bssid, uint8_t reason)
+void connectFail(const String &ssid, MacAddress bssid, WifiDisconnectReason reason)
 {
     // The different reason codes can be found in user_interface.h. in your SDK.
-    debugf("Disconnected from %s. Reason: %d", ssid.c_str(), reason);
+    Serial.print(_F("Disconnected from \""));
+    Serial.print(ssid);
+    Serial.print(_F("\", reason: "));
+    Serial.println(WifiEvents.getDisconnectReasonDesc(reason));
 }
 
 static void startConnection(void)

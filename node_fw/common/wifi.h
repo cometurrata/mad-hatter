@@ -1,5 +1,5 @@
-#ifndef __WIFI_H__
-#define __WIFI_H__
+#ifndef __WIFI_WRAPPER_H__
+#define __WIFI_WRAPPER_H__
 
 void wifiStart(void);
 

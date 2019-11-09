@@ -1,2 +1,7 @@
 Makefile-user.mk
+component.mk
+common.mk
+*.d
+*.o
+
 

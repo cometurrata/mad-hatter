@@ -1,9 +1,8 @@
 #include <stdint.h>
-#include <user_config.h>
-#include <SmingCore/SmingCore.h>
+#include <SmingCore.h>
 
 #include "http_client.h"
-#include "clock.h"
+// #include "clock.h"
 
 static Timer sensorTimer;
 static Timer heartBeatTimer;

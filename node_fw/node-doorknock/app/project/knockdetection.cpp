@@ -1,5 +1,4 @@
-#include <user_config.h>
-#include <SmingCore/SmingCore.h>
+#include <SmingCore.h>
 
 // #include "LSM9DS1.h"
 // #include "MPU6050.h"

@@ -1,9 +1,8 @@
 #include <stdint.h>
-#include <user_config.h>
-#include <SmingCore/SmingCore.h>
+#include <SmingCore.h>
 
 #include "http_client.h"
-#include "project/knockdetection.h"
+#include "knockdetection.h"
 
 static Timer sensorTimer;
 static Timer heartBeatTimer;
@@ -37,5 +36,5 @@ void nodeKnockDetectionInit(void)
 
 void nodeHeartBeatInit()
 {
-    heartBeatTimer.initializeMs(30 * 1000, [] { sendHeartBeat(); }).start();
+    heartBeatTimer.initializeMs(30 * 1000, &sendHeartBeat).start();
 }

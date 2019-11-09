@@ -1,6 +1,5 @@
 #include <stdint.h>
-#include <user_config.h>
-#include <SmingCore/SmingCore.h>
+#include <SmingCore.h>
 
 #include "http_client.h"
 #include "drawer.h"

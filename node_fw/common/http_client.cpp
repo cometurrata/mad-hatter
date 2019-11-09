@@ -1,6 +1,5 @@
 #include <stdint.h>
-#include <user_config.h>
-#include <SmingCore/SmingCore.h>
+#include <SmingCore.h>
 
 static HttpClient httpClient;
 
@@ -51,5 +50,5 @@ void sendNodeUpdate(String data)
 
 void sendHeartBeat()
 {
-    sendHttpRequest( String(NODE_HOSTNAME) + "/alive", "heartbeat", onNodeUpdateRequestResponse);
+    sendHttpRequest(String(NODE_HOSTNAME) + "/alive", "heartbeat", onNodeUpdateRequestResponse);
 }

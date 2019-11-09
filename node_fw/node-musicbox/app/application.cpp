@@ -1,7 +1,6 @@
 #include <string.h>
 
-#include <user_config.h>
-#include <SmingCore/SmingCore.h>
+#include <SmingCore.h>
 
 #include "wifi.h"
 #include "http_server.h"

@@ -1,3 +1,5 @@
+include $(PROJECT_PATH)/common.mk
+
 NODE_HOSTNAME=\"doorknock\"
 
 USER_CFLAGS += -DNODE_HOSTNAME=$(NODE_HOSTNAME)

@@ -1,6 +1,5 @@
 #include <stdint.h>
-#include <user_config.h>
-#include <SmingCore/SmingCore.h>
+#include <SmingCore.h>
 #include <Adafruit_NeoPixel/Adafruit_NeoPixel.h>
 #include "http_client.h"
 
@@ -8,7 +7,6 @@
 #include "project/shroom.h"
 
 #include "Adafruit_MCP23017.h"
-
 
 #define SDA_PIN 4
 #define SCL_PIN 5
@@ -48,13 +46,13 @@ static Timer heartBeatTimer;
 
 void nodeHeartBeatInit()
 {
-    heartBeatTimer.initializeMs(30 * 1000, sendHeartBeat();).start();
+	heartBeatTimer.initializeMs(30 * 1000, sendHeartBeat();).start();
 }
 
 void shroomInit()
 {
-    Wire.pins(SDA_PIN, SCL_PIN); // SDA, SCL
-    mcp.begin();
+	Wire.pins(SDA_PIN, SCL_PIN); // SDA, SCL
+	mcp.begin();
 	shroom1.init(SHROOM_1_TOUCH, SHROOM_1_PIN, NUMPIXELS, "1");
 	shroom2.init(SHROOM_2_TOUCH, SHROOM_2_PIN, NUMPIXELS, "2");
 	shroom3.init(SHROOM_3_TOUCH, SHROOM_3_PIN, NUMPIXELS, "3");

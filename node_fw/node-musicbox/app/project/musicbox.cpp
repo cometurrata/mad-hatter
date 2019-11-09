@@ -1,5 +1,4 @@
-#include <user_config.h>
-#include <SmingCore/SmingCore.h>
+#include <SmingCore.h>
 
 #define MAX_NB_OF_NOTES 15
 
@@ -29,7 +28,7 @@ typedef enum Notes
     NOTE_MAX
 } notes_t;
 
-uint8_t order[] = { DO, RE, NOTE_MAX };
+uint8_t order[] = {DO, RE, NOTE_MAX};
 uint8_t nextNote = 0;
 
 void task()
