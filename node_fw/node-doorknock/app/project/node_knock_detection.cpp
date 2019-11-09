@@ -31,7 +31,7 @@ void nodeKnockDetectionInit(void)
     knockDetectionInit();
     pinMode(0, OUTPUT);
     digitalWrite(0, HIGH);
-    sensorTimer.initializeMs(100, sendKnockDetection).start();
+    sensorTimer.initializeMs(100, &sendKnockDetection).start();
 }
 
 void nodeHeartBeatInit()

@@ -1,37 +1,10 @@
-#include <SmingCore.h>
+#include "musicbox.h"
+
+MusicBoxClass MusicBox;
 
 #define MAX_NB_OF_NOTES 15
 
-MCP mcp;
-Timer procTimer;
-
-bool done = false;
-
-typedef enum Notes
-{
-    DO = 0,
-    DO_,
-    RE,
-    RE_,
-    MI,
-    MI_,
-    FA,
-    FA_,
-    SOL,
-    SOL_,
-    LA,
-    LA_,
-    SI,
-    SI_,
-    DO2,
-    DO2_,
-    NOTE_MAX
-} notes_t;
-
-uint8_t order[] = {DO, RE, NOTE_MAX};
-uint8_t nextNote = 0;
-
-void task()
+void MusicBoxClass::task()
 {
     if (done)
     {
@@ -42,7 +15,7 @@ void task()
     {
         if (mcp.digitalRead(note))
         {
-            if (note == order[nextNote])
+            if (note == melody[nextNote])
             {
                 nextNote++;
             }
@@ -53,31 +26,26 @@ void task()
         }
     }
 
-    if (nextNote == sizeof(order))
+    if (nextNote == sizeof(melody))
     {
         done = true;
     }
 }
 
-void musicBoxReset()
+void MusicBoxClass::reset()
 {
     done = false;
     nextNote = 0;
 }
 
-bool musicBoxGetValidated()
+bool MusicBoxClass::isMelodyCorrect()
 {
     return done;
 }
 
-void musicBoxInit()
+void MusicBoxClass::init()
 {
     Wire.pins(4, 5); // SDA, SCL
-    // join I2C bus (I2Cdev library doesn't do this automatically)
-    Wire.begin();
-    Wire.setClock(400000); // I2C frequency at 400 kHz
-
     mcp.begin();
-
-    procTimer.initializeMs(20, task).start();
+    procTimer.initializeMs(20, std::bind(&MusicBoxClass::task, this)).start();
 }

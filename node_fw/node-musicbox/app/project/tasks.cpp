@@ -2,18 +2,14 @@
 #include <SmingCore.h>
 
 #include "http_client.h"
-// #include "clock.h"
+#include "musicbox.h"
 
 static Timer sensorTimer;
 static Timer heartBeatTimer;
 
-uint32_t threshold = 15000;
-
 void sensorTask()
 {
-    uint32_t val = clockGetVal();
-
-    if (val > threshold)
+    if (MusicBox.isMelodyCorrect())
     {
         sendNodeUpdate("Clock is Well set");
     }
