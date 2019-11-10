@@ -1,2 +1,6 @@
-NODE_HOSTNAME=\"temperature_sensor\"
+include $(PROJECT_PATH)/common.mk
+
+ARDUINO_LIBRARIES := SparkFun_APDS9960
+
+NODE_HOSTNAME=\"gesture_sensor\"
 USER_CFLAGS += -DNODE_HOSTNAME=$(NODE_HOSTNAME)
