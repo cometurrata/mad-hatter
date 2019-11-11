@@ -28,6 +28,15 @@ private:
     } Gesture_t;
 
     Gesture_t pattern[15] = {DIR_NONE};
+
+    void startShowingPassword();
+    void showPasswordTask();
+    void turnOnLed(int pin);
+    void turnOffLed(int pin);
+
+    Timer showPasswordTimer;
+
+    int showPasswordStep = 0;
 };
 
 extern GestureSensorClass GestureSensor;

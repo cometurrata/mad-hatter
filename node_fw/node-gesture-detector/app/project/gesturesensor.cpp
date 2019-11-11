@@ -2,10 +2,67 @@
 
 GestureSensorClass GestureSensor;
 
+uint8_t LEDS[4] = {1, 2, 3, 5};
+
 SparkFun_APDS9960 apds = SparkFun_APDS9960();
+
+void GestureSensorClass::turnOnLed(int pin)
+{
+    pinMode(pin, OUTPUT);
+    digitalWrite(pin, HIGH);
+}
+
+void GestureSensorClass::turnOffLed(int pin)
+{
+    pinMode(pin, OUTPUT);
+    digitalWrite(pin, LOW);
+}
+
+void GestureSensorClass::startShowingPassword()
+{
+    for (int i = 0; i < 4; i++)
+    {
+        turnOffLed(LEDS[i]);
+    }
+    showPasswordStep = 0;
+    showPasswordTimer.initializeMs(10, std::bind(&GestureSensorClass::showPasswordTask, this)).startOnce();
+}
+
+void GestureSensorClass::showPasswordTask()
+{
+    for (int i = 0; i < 4; i++)
+    {
+        if (i == showPasswordStep)
+        {
+            turnOnLed(LEDS[i]);
+        }
+        else
+        {
+            turnOffLed(LEDS[i]);
+        }
+    }
+
+    showPasswordStep++;
+
+    if (showPasswordStep >= 4) // Run one more time to be sure every led is turned off
+    {
+        nextGestureIndex = 0;
+        showPasswordStep = 0;
+        patternEncountered = false;
+    }
+    else
+    {
+        showPasswordTimer.initializeMs(1000, std::bind(&GestureSensorClass::showPasswordTask, this)).startOnce();
+    }
+}
 
 void GestureSensorClass::task()
 {
+    if (patternEncountered)
+    {
+        return;
+    }
+
     if (!apds.isGestureAvailable())
     {
         return;
@@ -30,6 +87,7 @@ void GestureSensorClass::task()
     if (nextGestureIndex >= sizeof(pattern))
     {
         patternEncountered = true;
+        startShowingPassword();
     }
 }
 
@@ -39,6 +97,11 @@ void GestureSensorClass::init()
     Serial.println("--------------------------------------");
     Serial.println("-- SparkFun APDS-9960 - GestureTest --");
     Serial.println("--------------------------------------");
+
+    for (int i = 0; i < 4; i++)
+    {
+        turnOffLed(LEDS[i]);
+    }
 
     Wire.pins(4, 5); // SDA, SCL
 
