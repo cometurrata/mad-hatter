@@ -36,8 +36,8 @@ static void ready()
 
 void init()
 {
-    Serial.begin(SERIAL_BAUD_RATE, SERIAL_8N1, SERIAL_FULL); // 115200 by default
-    Serial.systemDebugOutput(true);                          // Enable debug output to serial
+    Serial.begin(SERIAL_BAUD_RATE); // 115200 by default
+    Serial.systemDebugOutput(true); // Enable debug output to serial
     Serial.println("Sming. Let's do smart things!");
 
     // Set system ready callback method

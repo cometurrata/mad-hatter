@@ -27,7 +27,7 @@ private:
         DIR_ALL
     } Gesture_t;
 
-    Gesture_t pattern[15] = {DIR_NONE};
+    Gesture_t pattern[15] = {DIR_LEFT, DIR_RIGHT, DIR_UP, DIR_DOWN, DIR_DOWN};
 
     void startShowingPassword();
     void showPasswordTask();

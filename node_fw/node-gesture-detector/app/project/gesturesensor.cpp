@@ -2,18 +2,22 @@
 
 GestureSensorClass GestureSensor;
 
-uint8_t LEDS[4] = {1, 2, 3, 5};
+uint8_t LEDS[4] = {1, 2, 3, 6};
 
 SparkFun_APDS9960 apds = SparkFun_APDS9960();
 
 void GestureSensorClass::turnOnLed(int pin)
 {
+    debugf("Turning pin %d ON", pin);
+    return;
     pinMode(pin, OUTPUT);
     digitalWrite(pin, HIGH);
 }
 
 void GestureSensorClass::turnOffLed(int pin)
 {
+    debugf("Turning pin %d Off", pin);
+    return;
     pinMode(pin, OUTPUT);
     digitalWrite(pin, LOW);
 }
@@ -70,12 +74,15 @@ void GestureSensorClass::task()
 
     Gesture_t gesture = (Gesture_t)apds.readGesture();
 
+    Serial.printf("Gesture: %d\n", gesture);
+
     if (gesture >= DIR_NEAR || gesture == DIR_NONE)
     {
         Serial.println("Ignore gesture");
     }
     else if (pattern[nextGestureIndex] == gesture)
     {
+        Serial.println("Good gesture");
         nextGestureIndex++;
     }
     else
@@ -86,6 +93,7 @@ void GestureSensorClass::task()
 
     if (nextGestureIndex >= sizeof(pattern))
     {
+        Serial.println("Success");
         patternEncountered = true;
         startShowingPassword();
     }
@@ -103,7 +111,7 @@ void GestureSensorClass::init()
         turnOffLed(LEDS[i]);
     }
 
-    Wire.pins(4, 5); // SDA, SCL
+    Wire.pins(5, 4); // SDA, SCL
 
     // Initialize APDS-9960 (configure I2C and initial values)
     if (apds.init())

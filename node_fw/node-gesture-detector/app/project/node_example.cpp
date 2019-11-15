@@ -2,6 +2,7 @@
 #include <SmingCore.h>
 
 #include "http_client.h"
+#include "gesturesensor.h"
 
 static Timer sensorTimer;
 static Timer heartBeatTimer;
@@ -16,6 +17,7 @@ void temperatureSensorChanged(void)
 
 void nodeExampleInit(void)
 {
+    GestureSensor.init();
     sensorTimer.initializeMs(3 * 1000, temperatureSensorChanged).start();
 }
 
