@@ -2,13 +2,14 @@
 
 #include <SmingCore.h>
 #include <Libraries/MCP23017/MCP23017.h>
+#include "knocker.h"
 
 class Debouncer
 {
 private:
-    int isPushed = 5;
-
+    int isPushed = 0;
 public:
+    void init() {isPushed = 0;}
     void update(bool val);
     bool getIsPushed();
 };
@@ -22,9 +23,8 @@ private:
     bool isReleased();
 
 public:
-    Key(int figure);
-    Key();
 
+    void init() {wasPushed = false; figure = -1; debouncer.init();}
     void setFigure(int figure);
     void setPushed(bool isPushed);
 };
@@ -32,13 +32,13 @@ public:
 class KeyPadClass
 {
 public:
-    KeyPadClass();
+    void init();
 
 private:
     void task();
     MCP23017 mcp;
-    Timer procTimer;
-    Key keys[9];
+    Timer timer;
+    Key keys[10];
 };
 
 extern KeyPadClass keyPad;

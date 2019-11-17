@@ -7,16 +7,12 @@
 static Timer sensorTimer;
 static Timer heartBeatTimer;
 
-void sensorTask()
-{
-}
-
 void nodeClockInit(void)
 {
-    sensorTimer.initializeMs(3 * 1000, sensorTask).start();
+    keyPad.init();
 }
 
 void nodeHeartBeatInit()
 {
-    heartBeatTimer.initializeMs(30 * 1000, sendHeartBeat);
+    // heartBeatTimer.initializeMs(30 * 1000, sendHeartBeat);
 }

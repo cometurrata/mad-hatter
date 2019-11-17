@@ -1,42 +1,42 @@
 #include "keypad.h"
 #include "knocker.h"
 
-KeyPadClass keyPad = KeyPadClass();
+KeyPadClass keyPad;
 
 void Debouncer::update(bool val)
 {
     if (val)
     {
-        if (++isPushed >= 10)
+        isPushed++;
+        if ( isPushed >= 10)
         {
             isPushed = 10;
         }
     }
     else
     {
-        if (--isPushed <= 0)
+        isPushed --;
+        if (isPushed <= 0)
         {
             isPushed = 0;
         }
     }
+
 }
 
 bool Debouncer::getIsPushed()
 {
-    return isPushed >= 5;
+    if (isPushed >= 5)
+    {
+        return true;
+    }
+    return false;
 }
 
 bool Key::isReleased()
 {
     return (wasPushed && !debouncer.getIsPushed());
 }
-
-Key::Key(int figure)
-{
-    this->figure = figure;
-}
-
-Key::Key() {}
 
 void Key::setFigure(int figure)
 {
@@ -49,28 +49,34 @@ void Key::setPushed(bool isPushed)
 
     if (isReleased())
     {
-        knocker.start(figure);
+        knocker.start(this->figure);
     }
 
     wasPushed = debouncer.getIsPushed();
 }
 
-KeyPadClass::KeyPadClass()
+void KeyPadClass::init()
 {
-    for (int i = 0; i < 10; i++)
-    {
-        keys[i].setFigure(i);
-    }
-
+    debugf("Init MCP");
     Wire.pins(4, 5); // SDA, SCL
     mcp.begin();
-    procTimer.initializeMs(20, std::bind(&KeyPadClass::task, this)).start();
+    for (uint8_t i = 0; i < 10; i++)
+    {
+        keys[i].init();
+        keys[i].setFigure((uint8_t)i);
+        mcp.pinMode(i, INPUT);
+        mcp.pullUp(i, 1);
+    }
+    knocker.init();
+    timer.initializeMs(20, std::bind(&KeyPadClass::task, this)).startOnce();
 }
 
-void IRAM_ATTR KeyPadClass::task()
+void KeyPadClass::task()
 {
-    for (int figure = 0; figure <= 9; figure++)
+    for (uint8_t i = 0; i < 10; i++)
     {
-        keys[figure].setPushed(mcp.digitalRead(figure));
+        uint8_t pinV = !mcp.digitalRead(i);
+        keys[i].setPushed(pinV);
     }
+    timer.startOnce();
 }
