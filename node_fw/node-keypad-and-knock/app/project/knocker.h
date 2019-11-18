@@ -11,7 +11,7 @@ public:
     {
         knockToMake = 0;
         knockingStep = 0;
-        pauseDuration = 400;
+        pauseDuration = 200;
     }
 
 private:
@@ -19,7 +19,7 @@ private:
     uint8_t knockingStep = 0;
 
     void knock();
-    uint32_t pauseDuration = 400;
+    uint32_t pauseDuration = 200;
     static const uint8_t knockPerFigure[10];
     Timer timer;
 };

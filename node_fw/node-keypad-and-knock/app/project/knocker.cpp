@@ -10,16 +10,16 @@ void KnockerClass::knock()
     switch (knockingStep)
     {
         case 0:
-            digitalWrite(0, HIGH);
+            digitalWrite(14, HIGH);
             debugf("Knock !");
             knockingStep = 1;
-            timer.initializeMs(50, std::bind(&KnockerClass::knock, this)).startOnce();
+            timer.initializeMs(75, std::bind(&KnockerClass::knock, this)).startOnce();
             break;
 
         case 1:
             knockingStep = 0;
             knockToMake--;
-            digitalWrite(0, LOW);
+            digitalWrite(14, LOW);
             if (knockToMake != 0)
             {
                 timer.initializeMs(pauseDuration, std::bind(&KnockerClass::knock, this)).startOnce();
@@ -39,7 +39,8 @@ void KnockerClass::start(uint8_t figure)
 {
     timer.stop();
 
-    digitalWrite(0, LOW);
+    pinMode(14, OUTPUT);
+    digitalWrite(14, LOW);
 
     knockToMake = knockPerFigure[figure];
 

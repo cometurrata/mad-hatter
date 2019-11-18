@@ -68,7 +68,7 @@ void KeyPadClass::init()
         mcp.pullUp(i, 1);
     }
     knocker.init();
-    timer.initializeMs(20, std::bind(&KeyPadClass::task, this)).startOnce();
+    timer.initializeMs(10, std::bind(&KeyPadClass::task, this)).startOnce();
 }
 
 void KeyPadClass::task()
