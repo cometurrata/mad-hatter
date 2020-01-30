@@ -23,21 +23,21 @@ private:
     typedef enum Notes
     {
         DO = 0,
-        DO_,
+        DO_SHARP,
         RE,
-        RE_,
+        RE_SHARP,
         MI,
-        MI_,
+        MI_SHARP,
         FA,
-        FA_,
+        FA_SHARP,
         SOL,
-        SOL_,
+        SOL_SHARP,
         LA,
-        LA_,
+        LA_SHARP,
         SI,
-        SI_,
+        SI_SHARP,
         DO2,
-        DO2_,
+        DO2_SHARP,
         NOTE_MAX
     } notes_t;
 };
