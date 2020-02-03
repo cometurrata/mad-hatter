@@ -16,6 +16,7 @@ private:
     void task();
     bool patternEncountered = false;
     int nextGestureIndex = 0;
+    uint8_t password[4] = {1, 2, 3, 6};
     typedef enum
     {
         DIR_NONE = 0,
