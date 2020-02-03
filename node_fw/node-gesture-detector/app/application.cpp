@@ -5,7 +5,7 @@
 #include "wifi.h"
 #include "http_server.h"
 //  --------- EXAMPLE CODE -----------
-#include "project/node_example.h"
+#include "project/node_gesture_sensor.h"
 
 static void ShowInfo()
 {
@@ -29,9 +29,7 @@ static void ready()
     // Init wifi
     wifiStart();
 
-    //  --------- EXAMPLE CODE -----------
-    nodeExampleInit();
-    nodeHeartBeatInit();
+    NodeGestureSensor::instance().init();
 }
 
 void init()
