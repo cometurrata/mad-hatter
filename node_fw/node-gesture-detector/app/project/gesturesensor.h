@@ -3,11 +3,12 @@
 #include <SmingCore.h>
 
 #include <Libraries/SparkFun_APDS9960/SparkFun_APDS9960.h>
+#include "charlieplexing.h"
 
 class GestureSensorClass
 {
 public:
-    void init();
+    void init(CharliePlexing *charlieplexing);
     bool wasPatternEncountered();
 
 private:
@@ -31,12 +32,12 @@ private:
 
     void startShowingPassword();
     void showPasswordTask();
-    void turnOnLed(int pin);
-    void turnOffLed(int pin);
 
     Timer showPasswordTimer;
 
     int showPasswordStep = 0;
+
+    CharliePlexing *charlieplexing = nullptr;
 };
 
 extern GestureSensorClass GestureSensor;

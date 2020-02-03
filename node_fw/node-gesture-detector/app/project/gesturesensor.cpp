@@ -2,60 +2,34 @@
 
 GestureSensorClass GestureSensor;
 
-uint8_t LEDS[4] = {1, 2, 3, 6};
-
 SparkFun_APDS9960 apds = SparkFun_APDS9960();
-
-void GestureSensorClass::turnOnLed(int pin)
-{
-    debugf("Turning pin %d ON", pin);
-    return;
-    pinMode(pin, OUTPUT);
-    digitalWrite(pin, HIGH);
-}
-
-void GestureSensorClass::turnOffLed(int pin)
-{
-    debugf("Turning pin %d Off", pin);
-    return;
-    pinMode(pin, OUTPUT);
-    digitalWrite(pin, LOW);
-}
 
 void GestureSensorClass::startShowingPassword()
 {
-    for (int i = 0; i < 4; i++)
-    {
-        turnOffLed(LEDS[i]);
-    }
+    if (charlieplexing)
+        charlieplexing->turnOff();
+
     showPasswordStep = 0;
     showPasswordTimer.initializeMs(10, std::bind(&GestureSensorClass::showPasswordTask, this)).startOnce();
 }
 
 void GestureSensorClass::showPasswordTask()
 {
-    for (int i = 0; i < 4; i++)
+    if (showPasswordStep >= 4)
     {
-        if (i == showPasswordStep)
-        {
-            turnOnLed(LEDS[i]);
-        }
-        else
-        {
-            turnOffLed(LEDS[i]);
-        }
-    }
+        // If done showing password, turnoff leds
+        if (charlieplexing)
+            charlieplexing->turnOff();
 
-    showPasswordStep++;
-
-    if (showPasswordStep >= 4) // Run one more time to be sure every led is turned off
-    {
-        nextGestureIndex = 0;
         showPasswordStep = 0;
         patternEncountered = false;
     }
     else
     {
+        if (charlieplexing)
+            charlieplexing->setLed(password[showPasswordStep]);
+
+        showPasswordStep++;
         showPasswordTimer.initializeMs(1000, std::bind(&GestureSensorClass::showPasswordTask, this)).startOnce();
     }
 }
@@ -95,21 +69,17 @@ void GestureSensorClass::task()
     {
         Serial.println("Success");
         patternEncountered = true;
+        nextGestureIndex = 0;
         startShowingPassword();
     }
 }
 
-void GestureSensorClass::init()
+void GestureSensorClass::init(CharliePlexing *charlieplexing)
 {
-    Serial.println();
-    Serial.println("--------------------------------------");
-    Serial.println("-- SparkFun APDS-9960 - GestureTest --");
-    Serial.println("--------------------------------------");
+    this->charlieplexing = charlieplexing;
 
-    for (int i = 0; i < 4; i++)
-    {
-        turnOffLed(LEDS[i]);
-    }
+    if (charlieplexing)
+        charlieplexing->init();
 
     Wire.pins(5, 4); // SDA, SCL
 
