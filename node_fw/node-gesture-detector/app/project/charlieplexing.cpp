@@ -14,21 +14,16 @@ char CharliePlexing::activationMap[12][4] = {
     {'i', 'l', 'i', 'h'}, // 8:  7
     {'i', 'h', 'l', 'i'}, // 9:  8
     {'i', 'l', 'h', 'i'}, // 10: 9
-    {'i', 'i', 'l', 'h'}, // 11:  10
-    {'i', 'l', 'i', 'h'}, // 12:  11
+    {'i', 'i', 'l', 'h'}, // 11: UP
+    {'i', 'l', 'i', 'h'}, // 12: DOWN
 };
-
-CharliePlexing &CharliePlexing::instance()
-{
-    static CharliePlexing instance = CharliePlexing();
-    return instance;
-}
 
 CharliePlexing &CharliePlexing::init()
 {
     turnOff();
-    return instance();
+    return *this;
 }
+
 
 CharliePlexing &CharliePlexing::setLed(int figureToLightUp)
 {
@@ -51,7 +46,7 @@ CharliePlexing &CharliePlexing::setLed(int figureToLightUp)
             break;
         }
     }
-    return instance();  
+    return *this;  
 }
 
 CharliePlexing &CharliePlexing::turnOff()
@@ -60,5 +55,5 @@ CharliePlexing &CharliePlexing::turnOff()
     {
         pinMode(pins[i], INPUT);
     }
-    return instance();
+    return *this;
 }

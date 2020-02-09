@@ -3,12 +3,12 @@
 #include <SmingCore.h>
 
 #include <Libraries/SparkFun_APDS9960/SparkFun_APDS9960.h>
-#include "charlieplexing.h"
+#include "ledcontroller.h"
 
 class GestureSensorClass
 {
 public:
-    void init(CharliePlexing *charlieplexing);
+    void init(LedController *ledController);
     bool wasPatternEncountered();
 
 private:
@@ -17,6 +17,7 @@ private:
     bool patternEncountered = false;
     int nextGestureIndex = 0;
     uint8_t password[4] = {1, 2, 3, 6};
+
     typedef enum
     {
         DIR_NONE = 0,
@@ -26,10 +27,16 @@ private:
         DIR_DOWN,
         DIR_NEAR,
         DIR_FAR,
-        DIR_ALL
+        DIR_ALL,
+        DIR_MAX,
     } Gesture_t;
+    String describeGesture(Gesture_t gesture);
 
-    Gesture_t pattern[15] = {DIR_LEFT, DIR_RIGHT, DIR_UP, DIR_DOWN, DIR_DOWN};
+    Gesture_t pattern[6] = {DIR_LEFT, DIR_RIGHT, DIR_UP, DIR_DOWN, DIR_DOWN, DIR_MAX};
+
+    SparkFun_APDS9960 apds;
+    void showGestureDirectionForDuration(Gesture_t gesture, uint32_t timeout);
+    Timer showGestureDirectionTimer;
 
     void startShowingPassword();
     void showPasswordTask();
@@ -38,7 +45,7 @@ private:
 
     int showPasswordStep = 0;
 
-    CharliePlexing *charlieplexing = nullptr;
+    LedController *ledController = nullptr;
 };
 
 extern GestureSensorClass GestureSensor;

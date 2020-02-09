@@ -1,6 +1,8 @@
 #include "node_gesture_sensor.h"
 
-static NodeGestureSensor node = NodeGestureSensor();
+static NodeGestureSensor node;
+static LedController ledControllerInstance;
+static CharliePlexing charlieplexingInstance;
 
 void NodeGestureSensor::nodeHeartBeatInit()
 {
@@ -15,5 +17,6 @@ NodeGestureSensor &NodeGestureSensor::instance()
 void NodeGestureSensor::init(void)
 {
     nodeHeartBeatInit();
-    GestureSensor.init(&(CharliePlexing::instance()));
+    ledControllerInstance.init(&charlieplexingInstance);
+    GestureSensor.init(&ledControllerInstance);
 }

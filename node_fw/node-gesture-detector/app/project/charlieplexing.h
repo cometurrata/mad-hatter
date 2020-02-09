@@ -6,7 +6,6 @@
 class CharliePlexing
 {
 public:
-    static CharliePlexing &instance();
     CharliePlexing &init();
     CharliePlexing &setLed(int position);
     CharliePlexing &turnOff();
