@@ -6,7 +6,7 @@ static CharliePlexing charlieplexingInstance;
 
 void NodeGestureSensor::nodeHeartBeatInit()
 {
-    heartBeatTimer.initializeMs(30 * 1000, sendHeartBeat);
+    // heartBeatTimer.initializeMs(30 * 1000, sendHeartBeat);
 }
 
 NodeGestureSensor &NodeGestureSensor::instance()
@@ -18,5 +18,5 @@ void NodeGestureSensor::init(void)
 {
     nodeHeartBeatInit();
     ledControllerInstance.init(&charlieplexingInstance);
-    GestureSensor.init(&ledControllerInstance);
+    // GestureSensor.init(&ledControllerInstance);
 }

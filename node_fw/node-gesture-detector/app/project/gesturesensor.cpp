@@ -100,19 +100,21 @@ void GestureSensorClass::task()
 
     if (!apds.isGestureAvailable())
     {
+        Serial.println("Here");
         return;
     }
 
     Gesture_t gesture = (Gesture_t)apds.readGesture();
 
-    Serial.printf("Gesture: %s\n", describeGesture(gesture).c_str());
-    showGestureDirectionForDuration(gesture, 1000);
 
     if (gesture >= DIR_NEAR || gesture == DIR_NONE)
     {
-        Serial.println("Ignore gesture");
+        return;
     }
-    else if (pattern[nextGestureIndex] == gesture)
+
+    showGestureDirectionForDuration(gesture, 1000);
+
+    if (pattern[nextGestureIndex] == gesture)
     {
         Serial.println("Good gesture");
         nextGestureIndex++;

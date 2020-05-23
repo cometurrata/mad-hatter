@@ -12,11 +12,6 @@ public:
     {
         this->charlieplexing = cp;
         charlieplexing->init();
-        pinMode(0, OUTPUT);
-        pinMode(15, OUTPUT);
-
-        turnOff(12);
-        turnOff(13);
     }
 
     void turnOff()
@@ -58,10 +53,12 @@ public:
         }
         else if (ledId == 12)
         {
+            pinMode(0, OUTPUT);
             digitalWrite(0, LOW);
         }
         else if (ledId == 13)
         {
+            pinMode(15, OUTPUT);
             digitalWrite(15, HIGH);
         }
         currentLedOnId = ledId;
