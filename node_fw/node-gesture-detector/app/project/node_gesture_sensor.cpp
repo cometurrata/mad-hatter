@@ -17,6 +17,5 @@ NodeGestureSensor &NodeGestureSensor::instance()
 void NodeGestureSensor::init(void)
 {
     nodeHeartBeatInit();
-    ledControllerInstance.init(&charlieplexingInstance);
-    // GestureSensor.init(&ledControllerInstance);
+    GestureSensor.init(&ledControllerInstance);
 }
