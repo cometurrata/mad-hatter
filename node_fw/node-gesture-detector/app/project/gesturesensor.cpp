@@ -2,6 +2,11 @@
 
 GestureSensorClass GestureSensor;
 
+void GestureSensorClass::startPasswordTimer(int timeout)
+{
+    showPasswordTimer.initializeMs(timeout, std::bind(&GestureSensorClass::showPasswordTask, this)).startOnce();
+}
+
 void GestureSensorClass::startShowingPassword()
 {
     if (ledController)
@@ -10,7 +15,7 @@ void GestureSensorClass::startShowingPassword()
     showGestureDirectionTimer.stop();
 
     showPasswordStep = 0;
-    showPasswordTimer.initializeMs(10, std::bind(&GestureSensorClass::showPasswordTask, this)).startOnce();
+    startPasswordTimer(10);
 }
 
 void GestureSensorClass::showPasswordTask()
@@ -30,7 +35,7 @@ void GestureSensorClass::showPasswordTask()
             ledController->turnOn(password[showPasswordStep]);
 
         showPasswordStep++;
-        showPasswordTimer.initializeMs(1000, std::bind(&GestureSensorClass::showPasswordTask, this)).startOnce();
+        startPasswordTimer(1000);
     }
 }
 
@@ -65,6 +70,23 @@ String GestureSensorClass::describeGesture(Gesture_t gesture)
     }
 }
 
+int GestureSensorClass::ledIdForGestureDirection(Gesture_t gesture)
+{
+    switch (gesture)
+    {
+    case DIR_LEFT:
+        return LED_LEFT;
+    case DIR_RIGHT:
+        return LED_RIGHT;
+    case DIR_UP:
+        return LED_UP;
+    case DIR_DOWN:
+        return LED_DOWN;
+    default:
+        return -1;
+    }
+}
+
 void GestureSensorClass::showGestureDirectionForDuration(Gesture_t gesture, uint32_t timeout)
 {
     ledController->turnOff();
@@ -72,22 +94,9 @@ void GestureSensorClass::showGestureDirectionForDuration(Gesture_t gesture, uint
                         ledController);
 
     showGestureDirectionTimer.initializeMs(timeout, cb).startOnce();
-    switch (gesture)
-    {
-    case DIR_LEFT:
-        ledController->turnOn(10);
-        break;
-    case DIR_RIGHT:
-        ledController->turnOn(11);
-        break;
-    case DIR_UP:
-        ledController->turnOn(12);
-        break;
-    case DIR_DOWN:
-        ledController->turnOn(13);
-        break;
-    default:
-        break;
+    int ledId = ledIdForGestureDirection(gesture);
+    if (ledId >= 0) {
+        ledController->turnOn(ledId);
     }
 }
 
