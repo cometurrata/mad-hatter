@@ -1,10 +1,9 @@
 #pragma once
 
-// TODO: Configure proper gpio pins
-#define LED_RIGHT 4
-#define LED_LEFT  5
-#define LED_UP    12
-#define LED_DOWN  14
+#define LED_RIGHT 12
+#define LED_LEFT  13
+#define LED_UP    14
+#define LED_DOWN  16
 #define NB_LEDS   4
 
 class LedController
