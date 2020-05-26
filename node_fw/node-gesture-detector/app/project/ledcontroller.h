@@ -54,6 +54,11 @@ public:
         }
     }
 
+    void turnOff()
+    {
+        turnOff(currentLedOnId);
+    }
+
     void turnOn(int ledId)
     {
         if (isValidLedId(ledId)) {
@@ -62,8 +67,19 @@ public:
         }
     }
 
-    void turnOff()
+    void turnOnAll()
     {
-        turnOff(currentLedOnId);
+        int i;
+        for (i=0; i<NB_LEDS; i++) {
+            turnOn(validLedIdsList[i]);
+        }
+    }
+
+    void turnOffAll()
+    {
+        int i;
+        for (i=0; i<NB_LEDS; i++) {
+            turnOff(validLedIdsList[i]);
+        }
     }
 };
