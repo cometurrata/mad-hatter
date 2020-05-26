@@ -150,7 +150,7 @@ void GestureSensorClass::init(LedController *ledController)
     }
 
     // Start running the APDS-9960 gesture sensor engine
-    if (apds.enableGestureSensor(true))
+    if (apds.enableGestureSensor(false))
     {
         Serial.println("Gesture sensor is now running");
     }
