@@ -28,6 +28,11 @@ private:
         if(gpioValue) {
             // "HIGH" state -> configure as High Impedance
             pinMode(pin, INPUT);
+            /**
+             * If we don't reconfigure the gpio direction to be HIGH,
+             * there is a small current leak that can keep the LEDs slightly turned on
+             **/
+            digitalWrite(pin, HIGH);
         }
         else {
             // "LOW" state -> Configure as output connected to GND
