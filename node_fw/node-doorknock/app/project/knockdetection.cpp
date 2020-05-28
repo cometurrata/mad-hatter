@@ -61,7 +61,10 @@ uint32_t stopKnocking = 0;
 void IRAM_ATTR loop()
 {
     int16_t x, y, z;
-    mpu.readAccel(&x, &y, &z);
+    Arduino_Vector v = mpu.readRawAccel();
+    x = v.XAxis;
+    y = v.YAxis;
+    z = v.ZAxis;
 
     static bool isKnocking = false;
 
@@ -223,7 +226,7 @@ void IRAM_ATTR knockDetectionInit()
         knockArray[i] = 200;
     }
 
-    Vector_t a = mpu.readRawAccel();
+    Arduino_Vector a = mpu.readRawAccel();
 
     prevx = a.XAxis;
     prevy = a.YAxis;
