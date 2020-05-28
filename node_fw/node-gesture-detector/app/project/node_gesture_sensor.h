@@ -4,7 +4,6 @@
 
 #include "http_client.h"
 #include "gesturesensor.h"
-#include "charlieplexing.h"
 
 class NodeGestureSensor
 {

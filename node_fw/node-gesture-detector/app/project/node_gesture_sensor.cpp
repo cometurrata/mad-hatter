@@ -2,7 +2,6 @@
 
 static NodeGestureSensor node;
 static LedController ledControllerInstance;
-static CharliePlexing charlieplexingInstance;
 
 void NodeGestureSensor::nodeHeartBeatInit()
 {
@@ -17,5 +16,6 @@ NodeGestureSensor &NodeGestureSensor::instance()
 void NodeGestureSensor::init(void)
 {
     nodeHeartBeatInit();
+    ledControllerInstance.init();
     GestureSensor.init(&ledControllerInstance);
 }
