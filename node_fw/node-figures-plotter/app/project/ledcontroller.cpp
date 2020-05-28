@@ -14,7 +14,6 @@ void LedController::init()
     for (int i = 0; i < 16; i++)
     {
         mcp.pinMode(i, OUTPUT);
-        // mcp.pullUp(i, HIGH);
         mcp.digitalWrite(i, LOW);
     }
 }
@@ -31,7 +30,7 @@ void LedController::lightUpFigure(int figure)
     mcp.digitalWrite(pins[figure], HIGH);
     Serial.printf("lighting up %d\n", pins[figure]);
     lastLightenUpLed = pins[figure];
-    // timer.initializeMs(lightUpDuration, std::bind(&LedController::turnOffLastLightenLed, this)).startOnce();
+    timer.initializeMs(lightUpDuration, std::bind(&LedController::turnOffLastLightenLed, this)).startOnce();
 }
 
 void LedController::turnOffLastLightenLed()
