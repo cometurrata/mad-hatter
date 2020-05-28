@@ -1,7 +1,7 @@
 #include <SmingCore.h>
 
 // #include "LSM9DS1.h"
-// #include "MPU6050.h"
+#include "MPU6050.h"
 #define I2C_AXL_GYR_ADDRESS (0x6b)
 #define I2C_MAGNETOMETER_ADDRESS (0x1e)
 
@@ -12,7 +12,7 @@ Timer procTimer;
 
 uint8_t i = 0;
 uint8_t data[10];
-LSM9DS1 imu;
+// LSM9DS1 imu;
 
 MPU6050 mpu;
 
@@ -29,7 +29,7 @@ void knockDetectionSetup()
 
     if (!mpu.begin(MPU6050_SCALE_2000DPS, MPU6050_RANGE_2G))
     {
-        Serial.println("Failed to communicate with LSM9DS1.");
+        Serial.println("Failed to communicate with IMU.");
     }
 }
 
@@ -61,7 +61,10 @@ uint32_t stopKnocking = 0;
 void IRAM_ATTR loop()
 {
     int16_t x, y, z;
-    mpu.readAccel(&x, &y, &z);
+    Arduino_Vector v = mpu.readRawAccel();
+    x = v.XAxis;
+    y = v.YAxis;
+    z = v.ZAxis;
 
     static bool isKnocking = false;
 
@@ -223,7 +226,7 @@ void IRAM_ATTR knockDetectionInit()
         knockArray[i] = 200;
     }
 
-    Vector_t a = mpu.readRawAccel();
+    Arduino_Vector a = mpu.readRawAccel();
 
     prevx = a.XAxis;
     prevy = a.YAxis;
