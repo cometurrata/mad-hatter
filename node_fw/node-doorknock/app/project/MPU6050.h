@@ -73,9 +73,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define MPU6050_REG_PWR_MGMT_1        (0x6B) // Power Management 1
 #define MPU6050_REG_WHO_AM_I          (0x75) // Who Am I
 
-#ifndef VECTOR_STRUCT_H
-#define VECTOR_STRUCT_H
-struct Vector
+#ifndef ARDUINO_VECTOR_STRUCT_H
+#define ARDUINO_VECTOR_STRUCT_H
+struct Arduino_Vector
 {
     float XAxis;
     float YAxis;
@@ -223,18 +223,18 @@ class MPU6050
 	void setThreshold(uint8_t multiple = 1);
 	uint8_t getThreshold(void);
 
-	Vector readRawGyro(void);
-	Vector readNormalizeGyro(void);
+	Arduino_Vector readRawGyro(void);
+	Arduino_Vector readNormalizeGyro(void);
 
-	Vector readRawAccel(void);
-	Vector readNormalizeAccel(void);
-	Vector readScaledAccel(void);
+	Arduino_Vector readRawAccel(void);
+	Arduino_Vector readNormalizeAccel(void);
+	Arduino_Vector readScaledAccel(void);
 
     private:
-	Vector ra, rg; // Raw vectors
-	Vector na, ng; // Normalized vectors
-	Vector tg, dg; // Threshold and Delta for Gyro
-	Vector th;     // Threshold
+	Arduino_Vector ra, rg; // Raw Arduino_vectors
+	Arduino_Vector na, ng; // Normalized Arduino_vectors
+	Arduino_Vector tg, dg; // Threshold and Delta for Gyro
+	Arduino_Vector th;     // Threshold
 	Activites a;   // Activities
 	
 	float dpsPerDigit, rangePerDigit;

@@ -342,7 +342,7 @@ Activites MPU6050::readActivites(void)
     return a;
 }
 
-Vector MPU6050::readRawAccel(void)
+Arduino_Vector MPU6050::readRawAccel(void)
 {
     Wire.beginTransmission(mpuAddress);
     #if ARDUINO >= 100
@@ -380,7 +380,7 @@ Vector MPU6050::readRawAccel(void)
     return ra;
 }
 
-Vector MPU6050::readNormalizeAccel(void)
+Arduino_Vector MPU6050::readNormalizeAccel(void)
 {
     readRawAccel();
 
@@ -391,7 +391,7 @@ Vector MPU6050::readNormalizeAccel(void)
     return na;
 }
 
-Vector MPU6050::readScaledAccel(void)
+Arduino_Vector MPU6050::readScaledAccel(void)
 {
     readRawAccel();
 
@@ -403,7 +403,7 @@ Vector MPU6050::readScaledAccel(void)
 }
 
 
-Vector MPU6050::readRawGyro(void)
+Arduino_Vector MPU6050::readRawGyro(void)
 {
     Wire.beginTransmission(mpuAddress);
     #if ARDUINO >= 100
@@ -441,7 +441,7 @@ Vector MPU6050::readRawGyro(void)
     return rg;
 }
 
-Vector MPU6050::readNormalizeGyro(void)
+Arduino_Vector MPU6050::readNormalizeGyro(void)
 {
     readRawGyro();
 
@@ -563,17 +563,17 @@ void MPU6050::calibrateGyro(uint8_t samples)
 	delay(5);
     }
 
-    // Calculate delta vectors
+    // Calculate delta Arduino_vectors
     dg.XAxis = sumX / samples;
     dg.YAxis = sumY / samples;
     dg.ZAxis = sumZ / samples;
 
-    // Calculate threshold vectors
+    // Calculate threshold Arduino_vectors
     th.XAxis = sqrt((sigmaX / 50) - (dg.XAxis * dg.XAxis));
     th.YAxis = sqrt((sigmaY / 50) - (dg.YAxis * dg.YAxis));
     th.ZAxis = sqrt((sigmaZ / 50) - (dg.ZAxis * dg.ZAxis));
 
-    // If already set threshold, recalculate threshold vectors
+    // If already set threshold, recalculate threshold Arduino_vectors
     if (actualThreshold > 0)
     {
 	setThreshold(actualThreshold);
@@ -597,7 +597,7 @@ void MPU6050::setThreshold(uint8_t multiple)
 	    calibrateGyro();
 	}
 
-	// Calculate threshold vectors
+	// Calculate threshold Arduino_vectors
 	tg.XAxis = th.XAxis * multiple;
 	tg.YAxis = th.YAxis * multiple;
 	tg.ZAxis = th.ZAxis * multiple;
