@@ -10,7 +10,9 @@ static Timer heartBeatTimer;
 void sensorTask()
 {
     bool val = clockGetVal();
-    debugf("resolved : %s", val ? "true" : "false");
+    #ifdef VERBOSE
+    	debugf("resolved : %s", val ? "true" : "false");
+	#endif
     if (val)
     {
         sendNodeUpdate("Clock is Well set");

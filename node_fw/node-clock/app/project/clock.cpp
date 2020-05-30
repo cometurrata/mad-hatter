@@ -33,7 +33,8 @@ void task()
     qmc2.read(&mx2, &my2, &mz2);
     val_hand_2 = sqrt(mx2*mx2 + my2*my2 + mz2*mz2);
 
-    int32_t threshold = 16000;
+    int32_t threshold_1 = 14000;
+    int32_t threshold_2 = 14000;
 
     // if (val_hand_1 > threshold) {
     //     debugf("UNO");
@@ -44,11 +45,23 @@ void task()
     // }
 
     #ifdef VERBOSE
-        debugf("val_hand_1: %d \t val_hand_2: %d", val_hand_1, val_hand_2);
+        //debugf("val_hand_1: %d \t val_hand_2: %d", val_hand_1, val_hand_2);
     #endif
 
-    pos_1_ok = (val_hand_1 > threshold) ? true : false;
-    pos_2_ok = (val_hand_2 > threshold) ? true : false;
+    pos_1_ok = (val_hand_1 > threshold_1) ? true : false;
+    pos_2_ok = (val_hand_2 > threshold_2) ? true : false;
+
+    #ifdef VERBOSE
+        if (pos_1_ok) {
+            debugf("pos_1_ok");
+        }
+        else {
+            //debugf("val_hand_1: %d ", val_hand_1);
+        }
+        if (pos_2_ok) {
+            debugf("pos_2_ok");
+        }
+    #endif
 
 }
 
