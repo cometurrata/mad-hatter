@@ -5,7 +5,7 @@ static HttpClient httpClient;
 
 void sendHttpRequest(String path, String data, RequestCompletedDelegate onHttpRequestResponse)
 {
-    String serverAddress = "http://" SERVER_IP "/";
+    String serverAddress = "http://" SERVER_IP ":5000/";
     HttpRequest *postRequest = new HttpRequest(URL(serverAddress + path));
 
     debugf("Sending request to : %s", serverAddress.c_str());
