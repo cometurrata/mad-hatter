@@ -78,7 +78,7 @@ void IRAM_ATTR loop()
         filteredValue > thresholdHigh && (millis() - stopKnocking > 50))
     {
         isKnocking = true;
-        // debugf("Knock");
+        debugf("Knock");
     }
     else if (isKnocking && filteredValue < thresholdLow)
     {
