@@ -13,6 +13,7 @@ void sendHttpRequest(String path, String data, RequestCompletedDelegate onHttpRe
     HttpHeaders headers;
     headers["User-Agent"] = "HttpClient/Sming"; // Prefer use of enumerated type for standard field names
     headers["X-Powered-By"] = "Sming";          // Use text for non-standard field names
+    headers["Content-Type"] = "application/json";
 
     postRequest->setMethod(HTTP_POST)
         ->setHeaders(headers)
