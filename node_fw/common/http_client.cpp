@@ -9,6 +9,8 @@ void sendHttpRequest(String path, String data, RequestCompletedDelegate onHttpRe
     HttpRequest *postRequest = new HttpRequest(URL(serverAddress + path));
 
     debugf("Sending request to : %s", serverAddress.c_str());
+    debugf("path : %s", path.c_str());
+    debugf("data : %s", data.c_str());
 
     HttpHeaders headers;
     headers["User-Agent"] = "HttpClient/Sming"; // Prefer use of enumerated type for standard field names

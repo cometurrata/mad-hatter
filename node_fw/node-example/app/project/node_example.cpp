@@ -4,7 +4,6 @@
 #include "http_client.h"
 
 static Timer sensorTimer;
-static Timer heartBeatTimer;
 
 void temperatureSensorChanged(void)
 {
@@ -17,9 +16,4 @@ void temperatureSensorChanged(void)
 void nodeExampleInit(void)
 {
     sensorTimer.initializeMs(3 * 1000, temperatureSensorChanged).start();
-}
-
-void nodeHeartBeatInit()
-{
-    heartBeatTimer.initializeMs(30 * 1000, sendHeartBeat);
 }

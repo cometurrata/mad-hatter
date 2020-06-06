@@ -31,7 +31,7 @@ static void startConnection(void)
     debugf("Connecting to %s, %s", WIFI_SSID, WIFI_PASSWORD);
 }
 
-void wifiStart(void)
+void wifiStart(StationGotIPDelegate cb)
 {
     // Access Point disabled
     WifiAccessPoint.enable(false);
@@ -40,7 +40,10 @@ void wifiStart(void)
     WifiStation.enable(true);
 
     // Set callback that should be triggered when we have assigned IP
-    WifiEvents.onStationGotIP(connectOk);
+    if (cb == null) {
+        cb = connectOk;
+    }
+    WifiEvents.onStationGotIP(cb);
 
     // Set callback that should be triggered if we are disconnected or connection attempt failed
     WifiEvents.onStationDisconnect(connectFail);

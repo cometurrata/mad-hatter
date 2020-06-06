@@ -42,13 +42,6 @@ Shroom shroom4;
 
 #include "shroom.h"
 
-static Timer heartBeatTimer;
-
-void nodeHeartBeatInit()
-{
-	heartBeatTimer.initializeMs(30 * 1000, sendHeartBeat).start();
-}
-
 void shroomInit()
 {
 	Wire.pins(SDA_PIN, SCL_PIN); // SDA, SCL

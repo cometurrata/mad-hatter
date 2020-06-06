@@ -9,7 +9,7 @@ uint32_t threshold = 15000;
 
 void nodeHeartBeatInit()
 {
-    heartBeatTimer.initializeMs(30 * 1000, sendHeartBeat);
+    heartBeatTimer.initializeMs(HEARTBEAT_TIME_MS, sendHeartBeat).start();
     pinMode(5, OUTPUT);
     digitalWrite(5, HIGH);
 }
