@@ -3,7 +3,7 @@
 
 #include <SmingCore.h>
 
-#include <Adafruit_NeoPixel/Adafruit_NeoPixel.h>
+#include <Libraries/Adafruit_NeoPixel/Adafruit_NeoPixel.h>
 // Which pin on the Esp8266 is connected to the NeoPixels?
 #include "Adafruit_MCP23017.h"
 

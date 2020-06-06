@@ -2,36 +2,20 @@
 
 GestureSensorClass GestureSensor;
 
-void GestureSensorClass::startShowingPassword()
+void GestureSensorClass::startGesturePollingTimer(void)
 {
-    if (ledController)
-        ledController->turnOff();
-
-    showGestureDirectionTimer.stop();
-
-    showPasswordStep = 0;
-    showPasswordTimer.initializeMs(10, std::bind(&GestureSensorClass::showPasswordTask, this)).startOnce();
+    taskTimer.initializeMs(20, std::bind(&GestureSensorClass::task, this)).startOnce();
 }
 
-void GestureSensorClass::showPasswordTask()
+void GestureSensorClass::onPasswordDisplayEnd()
 {
-    if (showPasswordStep >= 4)
-    {
-        // If done showing password, turnoff leds
-        if (ledController)
-            ledController->turnOff();
+    patternEncountered = false;
+    startGesturePollingTimer();
+}
 
-        showPasswordStep = 0;
-        patternEncountered = false;
-    }
-    else
-    {
-        if (ledController)
-            ledController->turnOn(password[showPasswordStep]);
-
-        showPasswordStep++;
-        showPasswordTimer.initializeMs(1000, std::bind(&GestureSensorClass::showPasswordTask, this)).startOnce();
-    }
+void GestureSensorClass::startShowingPassword()
+{
+    uiController.startShowingPassword(std::bind(&GestureSensorClass::onPasswordDisplayEnd, this));
 }
 
 String GestureSensorClass::describeGesture(Gesture_t gesture)
@@ -65,6 +49,23 @@ String GestureSensorClass::describeGesture(Gesture_t gesture)
     }
 }
 
+int GestureSensorClass::ledIdForGestureDirection(Gesture_t gesture)
+{
+    switch (gesture)
+    {
+    case DIR_LEFT:
+        return LED_LEFT;
+    case DIR_RIGHT:
+        return LED_RIGHT;
+    case DIR_UP:
+        return LED_UP;
+    case DIR_DOWN:
+        return LED_DOWN;
+    default:
+        return -1;
+    }
+}
+
 void GestureSensorClass::showGestureDirectionForDuration(Gesture_t gesture, uint32_t timeout)
 {
     ledController->turnOff();
@@ -72,72 +73,71 @@ void GestureSensorClass::showGestureDirectionForDuration(Gesture_t gesture, uint
                         ledController);
 
     showGestureDirectionTimer.initializeMs(timeout, cb).startOnce();
-    switch (gesture)
-    {
-    case DIR_LEFT:
-        ledController->turnOn(10);
-        break;
-    case DIR_RIGHT:
-        ledController->turnOn(11);
-        break;
-    case DIR_UP:
-        ledController->turnOn(12);
-        break;
-    case DIR_DOWN:
-        ledController->turnOn(13);
-        break;
-    default:
-        break;
+    int ledId = ledIdForGestureDirection(gesture);
+    if (ledId >= 0) {
+        ledController->turnOn(ledId);
     }
 }
 
 void GestureSensorClass::task()
 {
+    Gesture_t gesture;
+
     if (patternEncountered)
     {
+        Serial.println("[GESTURE_SENSOR] Pattern encountered !");
         return;
     }
 
     if (!apds.isGestureAvailable())
     {
-        Serial.println("Here");
-        return;
+        goto exit;
     }
 
-    Gesture_t gesture = (Gesture_t)apds.readGesture();
-
+    gesture = (Gesture_t)apds.readGesture();
+    Serial.print("[GESTURE_SENSOR] gesture read = ");
+    Serial.print(describeGesture(gesture));
+    Serial.printf(" (%d)", gesture);
+    Serial.println("");
 
     if (gesture >= DIR_NEAR || gesture == DIR_NONE)
     {
-        return;
+        Serial.println("[GESTURE_SENSOR] Invalid gesture");
+        goto exit;
     }
 
+    Serial.println("[GESTURE_SENSOR] Show gesture");
     showGestureDirectionForDuration(gesture, 1000);
 
     if (pattern[nextGestureIndex] == gesture)
     {
-        Serial.println("Good gesture");
+        Serial.println("[GESTURE_SENSOR] Good gesture");
         nextGestureIndex++;
     }
     else
     {
         nextGestureIndex = 0;
-        Serial.println("Wrong gesture, reseting pattern");
+        Serial.println("[GESTURE_SENSOR] Wrong gesture, reseting pattern");
     }
 
     if (pattern[nextGestureIndex] == DIR_MAX)
     {
-        Serial.println("Success");
+        // TODO: Notify Server that gesture was properly detected
+        Serial.println("[GESTURE_SENSOR] Success !!");
         patternEncountered = true;
         nextGestureIndex = 0;
         startShowingPassword();
     }
+
+exit:
+    startGesturePollingTimer();
 }
 
 void GestureSensorClass::init(LedController *ledController)
 {
     this->ledController = ledController;
     Wire.pins(5, 4); // SDA, SCL
+    uiController.init(ledController);
 
     // Initialize APDS-9960 (configure I2C and initial values)
     if (apds.init())
@@ -150,7 +150,7 @@ void GestureSensorClass::init(LedController *ledController)
     }
 
     // Start running the APDS-9960 gesture sensor engine
-    if (apds.enableGestureSensor(true))
+    if (apds.enableGestureSensor(false))
     {
         Serial.println("Gesture sensor is now running");
     }
@@ -159,5 +159,5 @@ void GestureSensorClass::init(LedController *ledController)
         Serial.println("Something went wrong during gesture sensor init!");
     }
 
-    taskTimer.initializeMs(20, std::bind(&GestureSensorClass::task, this)).start();
+    startGesturePollingTimer();
 }

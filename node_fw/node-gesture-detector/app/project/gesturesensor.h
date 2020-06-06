@@ -4,6 +4,7 @@
 
 #include <Libraries/SparkFun_APDS9960/SparkFun_APDS9960.h>
 #include "ledcontroller.h"
+#include "ui_controller.h"
 
 class GestureSensorClass
 {
@@ -12,11 +13,11 @@ public:
     bool wasPatternEncountered();
 
 private:
+    UIController uiController;
     Timer taskTimer;
     void task();
     bool patternEncountered = false;
     int nextGestureIndex = 0;
-    uint8_t password[4] = {1, 2, 3, 6};
 
     typedef enum
     {
@@ -32,18 +33,16 @@ private:
     } Gesture_t;
     String describeGesture(Gesture_t gesture);
 
-    Gesture_t pattern[6] = {DIR_LEFT, DIR_RIGHT, DIR_UP, DIR_DOWN, DIR_DOWN, DIR_MAX};
+    const Gesture_t pattern[6] = {DIR_LEFT, DIR_RIGHT, DIR_UP, DIR_DOWN, DIR_DOWN, DIR_MAX};
 
     SparkFun_APDS9960 apds;
     void showGestureDirectionForDuration(Gesture_t gesture, uint32_t timeout);
     Timer showGestureDirectionTimer;
 
+    int ledIdForGestureDirection(Gesture_t gesture);
+    void startGesturePollingTimer();
+    void onPasswordDisplayEnd();
     void startShowingPassword();
-    void showPasswordTask();
-
-    Timer showPasswordTimer;
-
-    int showPasswordStep = 0;
 
     LedController *ledController = nullptr;
 };

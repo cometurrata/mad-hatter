@@ -1,17 +1,61 @@
 #pragma once
 
-#include "charlieplexing.h"
+#define LED_UP     12
+#define LED_RIGHT  13
+#define LED_LEFT   14
+#define LED_DOWN   16
+#define NB_LEDS    4
 
 class LedController
 {
-    CharliePlexing *charlieplexing = nullptr;
+private:
     int currentLedOnId = -1;
+    const uint8_t validLedIdsList[NB_LEDS] = {LED_RIGHT, LED_LEFT, LED_UP, LED_DOWN};
+
+    int isValidLedId(int ledId)
+    {
+        int i;
+        for (i=0; i<NB_LEDS; i++) {
+            if (validLedIdsList[i] == ledId) {
+                return 1;
+            }
+        }
+        return 0;
+    }
+
+    void gpioOpenDrainWrite(byte pin, bool gpioValue)
+    {
+        if(gpioValue) {
+            // "HIGH" state -> configure as High Impedance
+            pinMode(pin, INPUT);
+            /**
+             * If we don't reconfigure the gpio direction to be HIGH,
+             * there is a small current leak that can keep the LEDs slightly turned on
+             **/
+            digitalWrite(pin, HIGH);
+        }
+        else {
+            // "LOW" state -> Configure as output connected to GND
+            pinMode(pin, OUTPUT);
+            digitalWrite(pin, LOW);
+        }
+    }
 
 public:
-    void init(CharliePlexing *cp)
+    void init()
     {
-        this->charlieplexing = cp;
-        charlieplexing->init();
+        int i;
+        for (i=0; i<NB_LEDS; i++) {
+            turnOff(i);
+        }
+    }
+
+    void turnOff(int ledId)
+    {
+        if (isValidLedId(ledId)) {
+            gpioOpenDrainWrite(ledId, HIGH);
+            currentLedOnId = -1;
+        }
     }
 
     void turnOff()
@@ -19,48 +63,27 @@ public:
         turnOff(currentLedOnId);
     }
 
-    void turnOff(int ledId)
-    {
-        if (ledId < 0)
-        {
-            return;
-        }
-
-        charlieplexing->turnOff();
-
-        if (ledId == 12)
-        {
-            digitalWrite(0, HIGH);
-        }
-        else if (ledId == 13)
-        {
-            digitalWrite(15, LOW);
-        }
-        currentLedOnId = -1;
-    }
-
     void turnOn(int ledId)
     {
-        if (ledId < 0)
-            return;
+        if (isValidLedId(ledId)) {
+            gpioOpenDrainWrite(ledId, LOW);
+            currentLedOnId = ledId;
+        }
+    }
 
-        if (ledId >= 14)
-            return;
+    void turnOnAll()
+    {
+        int i;
+        for (i=0; i<NB_LEDS; i++) {
+            turnOn(validLedIdsList[i]);
+        }
+    }
 
-        if (ledId < 12)
-        {
-            charlieplexing->setLed(ledId);
+    void turnOffAll()
+    {
+        int i;
+        for (i=0; i<NB_LEDS; i++) {
+            turnOff(validLedIdsList[i]);
         }
-        else if (ledId == 12)
-        {
-            pinMode(0, OUTPUT);
-            digitalWrite(0, LOW);
-        }
-        else if (ledId == 13)
-        {
-            pinMode(15, OUTPUT);
-            digitalWrite(15, HIGH);
-        }
-        currentLedOnId = ledId;
     }
 };

@@ -4,9 +4,6 @@ PROJECT_PATH =  $(mkfile_dir)/..
 
 include $(PROJECT_PATH)/common.mk
 
-
-ARDUINO_LIBRARIES := SparkFun_APDS9960
-
 NODE_HOSTNAME=\"gesture_sensor\"
 COMPONENT_CFLAGS += -DNODE_HOSTNAME=$(NODE_HOSTNAME)
 
