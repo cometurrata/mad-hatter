@@ -2,6 +2,6 @@
 #define CLOCK_H
 
 void clockInit();
-int32_t clockGetVal();
+bool clockGetVal();
 
 #endif  // CLOCK_H
