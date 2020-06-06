@@ -1,10 +1,10 @@
 #include <stdint.h>
 #include <SmingCore.h>
-#include <Adafruit_NeoPixel/Adafruit_NeoPixel.h>
+#include <Libraries/Adafruit_NeoPixel/Adafruit_NeoPixel.h>
 #include "http_client.h"
 
-#include "project/shroom_task.h"
-#include "project/shroom.h"
+#include "shroom_task.h"
+#include "shroom.h"
 
 #include "Adafruit_MCP23017.h"
 
@@ -46,7 +46,7 @@ static Timer heartBeatTimer;
 
 void nodeHeartBeatInit()
 {
-	heartBeatTimer.initializeMs(30 * 1000, sendHeartBeat();).start();
+	heartBeatTimer.initializeMs(30 * 1000, sendHeartBeat).start();
 }
 
 void shroomInit()
