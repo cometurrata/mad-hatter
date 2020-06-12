@@ -1,7 +1,7 @@
-#ifndef __NODE_EXAMPLE__H__
-#define __NODE_EXAMPLE__H__
+#ifndef __NODE_TASKS__H__
+#define __NODE_TASKS__H__
 
 void nodeClockInit(void);
 void nodeHeartBeatInit(void);
 
-#endif /* __NODE_EXAMPLE__H__ */
+#endif /* __NODE_TASKS__H__ */

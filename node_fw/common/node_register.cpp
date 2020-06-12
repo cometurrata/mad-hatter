@@ -24,6 +24,7 @@ static int onRegisterNodeRequestResponse(HttpConnection &connection, bool succes
 void registerNode(void)
 {
     String register_data = "{"
+                           "\"status\": \"unsolved\","
                            "\"ip\":\"" +
                            WifiStation.getIP().toString() +
                            "\",\"hostname\":\"" NODE_HOSTNAME "\""

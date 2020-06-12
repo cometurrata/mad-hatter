@@ -6,5 +6,6 @@
 
 void startWebServer(void);
 void httpServerAddPath(String path, const HttpPathDelegate &callback);
+void serverAddRoute(String path, HttpPathDelegate callback);
 
 #endif /* __HTTP_SERVER__H__ */

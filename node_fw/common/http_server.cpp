@@ -146,6 +146,14 @@ void onRemoveTriggerPin(HttpRequest &request, HttpResponse &response)
     }
 }
 
+static void onReboot(HttpRequest &request, HttpResponse &response)
+{
+    debugf("Received reboot command");
+    response.code = HTTP_STATUS_OK;
+
+    System.restart();
+}
+
 static void onDefault(HttpRequest &request, HttpResponse &response)
 {
     debugf("Unknown path requested: %s\n", request.uri.Path.c_str());
@@ -157,6 +165,7 @@ void startWebServer(void)
     debugf("==== STARTING WEB SERVER ====\n");
     server.listen(80);
     server.paths.set("/", onIndex);
+    server.paths.set("/reboot", onReboot);
     server.paths.set("/configure-pin", onConfigurePin);
     server.paths.set("/read-pin", onReadPin);
     server.paths.set("/write-pin", onWritePin);
@@ -166,6 +175,11 @@ void startWebServer(void)
     server.paths.setDefault(onDefault);
 
     trigger_timer.initializeMs(100, trigger_task).start();
+}
+
+void serverAddRoute(String path, HttpPathDelegate callback)
+{
+    server.paths.set(path, callback);
 }
 
 void httpServerAddPath(String path, const HttpPathDelegate &callback )

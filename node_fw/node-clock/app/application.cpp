@@ -5,6 +5,7 @@
 #include "wifi.h"
 #include "node_register.h"
 #include "http_server.h"
+#include "http_client.h"
 //  --------- EXAMPLE CODE -----------
 #include "project/tasks.h"
 
@@ -19,12 +20,22 @@ static void ShowInfo()
     //update_print_config();
 }
 
+void onActuate(HttpRequest &request, HttpResponse &response)
+{
+    debugf("onActuate\n");
+    sendNodeUpdate("{\"status\": \"solved\"}");
+
+    response.code = HTTP_STATUS_OK;
+    response.sendString("OK");
+}
+
 void wifiOk(IpAddress ip, IpAddress mask, IpAddress gateway)
 {
     Serial.print(_F("I'm CONNECTED to "));
     Serial.println(ip);
     debugf("AP. ip: %s mac: %s hostname: %s", WifiStation.getIP().toString().c_str(), WifiStation.getMAC().c_str(), WifiStation.getHostname().c_str());
     startWebServer();
+    serverAddRoute("/actuate", onActuate);
     registerNode();
     nodeHeartBeatInit();
 }
