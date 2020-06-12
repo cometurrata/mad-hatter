@@ -12,11 +12,12 @@ void sendKnockDetection(void)
 {
     if (getKnockDetected())
     {
-        // debugf("Knock Detected");
+        debugf("Knock Detected");
         if (!infoSent)
         {
             infoSent = true;
-            sendNodeUpdate("event");
+            sendNodeUpdate("{\"status\": \"solved\"}");
+            //sendNodeUpdate("event");
         }
     }
     else

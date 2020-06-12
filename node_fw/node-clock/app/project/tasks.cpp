@@ -15,7 +15,7 @@ void sensorTask()
 	#endif
     if (val)
     {
-        sendNodeUpdate("Clock is Well set");
+        sendNodeUpdate("{\"status\": \"solved\"}");
     }
 }
 

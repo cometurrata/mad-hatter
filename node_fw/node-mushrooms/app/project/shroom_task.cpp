@@ -8,6 +8,8 @@
 
 #include "Adafruit_MCP23017.h"
 
+Adafruit_MCP23017 mcp;
+
 #define SDA_PIN 4
 #define SCL_PIN 5
 
@@ -42,12 +44,39 @@ Shroom shroom4;
 
 #include "shroom.h"
 
+static int combinaisonIndex = 0;
+static uint8_t combinaison[5] = {1, 2, 3, 4, 3};
+
+void checkCombinaison(int id)
+{
+	if (id == combinaison[combinaisonIndex])
+	{
+		debugf("checkCombinaison index: %d", combinaisonIndex);
+		combinaisonIndex ++;
+		if (combinaisonIndex >= 4)
+		{
+			combinaisonIndex = 0;
+			sendNodeUpdate("{\"status\": \"solved\"}");
+		}
+	}
+	else {
+		combinaisonIndex = 0;
+	}
+}
+
+void onTouch(String name)
+{
+	debugf("touched: %s", name.c_str());
+	checkCombinaison(name.toInt());
+}
+
 void shroomInit()
 {
 	Wire.pins(SDA_PIN, SCL_PIN); // SDA, SCL
 	mcp.begin();
-	shroom1.init(SHROOM_1_TOUCH, SHROOM_1_PIN, NUMPIXELS, "1");
-	shroom2.init(SHROOM_2_TOUCH, SHROOM_2_PIN, NUMPIXELS, "2");
-	shroom3.init(SHROOM_3_TOUCH, SHROOM_3_PIN, NUMPIXELS, "3");
-	shroom4.init(SHROOM_4_TOUCH, SHROOM_4_PIN, NUMPIXELS, "4");
+	shroom1.init(mcp, SHROOM_1_TOUCH, SHROOM_1_PIN, NUMPIXELS, "1", onTouch);
+	shroom2.init(mcp, SHROOM_2_TOUCH, SHROOM_2_PIN, NUMPIXELS, "2", onTouch);
+	shroom3.init(mcp, SHROOM_3_TOUCH, SHROOM_3_PIN, NUMPIXELS, "3", onTouch);
+	shroom4.init(mcp, SHROOM_4_TOUCH, SHROOM_4_PIN, NUMPIXELS, "4", onTouch);
 }
+
