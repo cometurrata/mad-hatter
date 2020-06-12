@@ -4,8 +4,6 @@
 #include "http_client.h"
 #include "ledcontroller.h"
 
-static Timer heartBeatTimer;
-
 static Timer nodeTimer;
 static int figure = 0;
 void task(void)
@@ -24,10 +22,4 @@ void nodeFigurePlotterInit(void)
 {
     LedController::instance()->init();
     nodeTimer.initializeMs(1000, task).start();
-}
-
-
-void nodeHeartBeatInit()
-{
-    heartBeatTimer.initializeMs(30 * 1000, sendHeartBeat).start();
 }

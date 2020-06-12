@@ -12,10 +12,9 @@ void setDrawerClosed()
     digitalWrite(0, HIGH);
 }
 
-void nodeHeartBeatInit()
+void drawerInit()
 {
-    heartBeatTimer.initializeMs(15 * 1000, &sendHeartBeat).start();
-    pinMode(0, OUTPUT);
+	pinMode(0, OUTPUT);
     digitalWrite(0, LOW);
     delayDrawerOpenTimer.initializeMs(10000, &setDrawerClosed).startOnce();
 }

@@ -5,7 +5,6 @@
 #include "knockdetection.h"
 
 static Timer sensorTimer;
-static Timer heartBeatTimer;
 
 bool infoSent = false;
 
@@ -34,7 +33,3 @@ void nodeKnockDetectionInit(void)
     sensorTimer.initializeMs(100, &sendKnockDetection).start();
 }
 
-void nodeHeartBeatInit()
-{
-    heartBeatTimer.initializeMs(30 * 1000, &sendHeartBeat).start();
-}

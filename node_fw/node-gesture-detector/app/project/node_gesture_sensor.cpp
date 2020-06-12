@@ -3,10 +3,6 @@
 static NodeGestureSensor node;
 static LedController ledControllerInstance;
 
-void NodeGestureSensor::nodeHeartBeatInit()
-{
-    // heartBeatTimer.initializeMs(30 * 1000, sendHeartBeat);
-}
 
 NodeGestureSensor &NodeGestureSensor::instance()
 {
@@ -15,7 +11,6 @@ NodeGestureSensor &NodeGestureSensor::instance()
 
 void NodeGestureSensor::init(void)
 {
-    nodeHeartBeatInit();
     ledControllerInstance.init();
     GestureSensor.init(&ledControllerInstance);
 }

@@ -4,6 +4,7 @@
 
 #include "wifi.h"
 #include "http_server.h"
+#include "node_register.h"
 //  --------- EXAMPLE CODE -----------
 #include "project/tasks.h"
 
@@ -18,6 +19,16 @@ static void ShowInfo()
     //update_print_config();
 }
 
+void wifiOk(IpAddress ip, IpAddress mask, IpAddress gateway)
+{
+    Serial.print(_F("I'm CONNECTED to "));
+    Serial.println(ip);
+    debugf("AP. ip: %s mac: %s hostname: %s", WifiStation.getIP().toString().c_str(), WifiStation.getMAC().c_str(), WifiStation.getHostname().c_str());
+    startWebServer();
+    registerNode();
+    nodeHeartBeatInit();
+}
+
 // Will be called when WiFi hardware and software initialization was finished
 // And system initialization was completed
 static void ready()
@@ -27,10 +38,10 @@ static void ready()
     ShowInfo();
 
     // Init wifi
-    wifiStart();
+    wifiStart(wifiOk);
 
     //  --------- EXAMPLE CODE -----------
-    nodeHeartBeatInit();
+    //nodeHeartBeatInit();
 }
 
 void init()
@@ -38,9 +49,6 @@ void init()
     Serial.begin(SERIAL_BAUD_RATE, SERIAL_8N1, SERIAL_FULL); // 115200 by default
     Serial.systemDebugOutput(true);                          // Enable debug output to serial
     Serial.println("Sming. Let's do smart things!");
-
-    nodeHeartBeatInit();
-
     // Set system ready callback method
     System.onReady(ready);
 }
