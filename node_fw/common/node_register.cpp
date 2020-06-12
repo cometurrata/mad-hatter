@@ -21,7 +21,7 @@ static int onRegisterNodeRequestResponse(HttpConnection &connection, bool succes
     return 0;
 }
 
-void registerNode(void)
+void registerNode()
 {
     String register_data = "{"
                            "\"status\": \"unsolved\","

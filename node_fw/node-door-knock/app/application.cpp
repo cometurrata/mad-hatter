@@ -29,6 +29,12 @@ void onActuate(HttpRequest &request, HttpResponse &response)
     response.sendString("OK");
 }
 
+void registerNode()
+{
+
+
+}
+
 void wifiOk(IpAddress ip, IpAddress mask, IpAddress gateway)
 {
     Serial.print(_F("I'm CONNECTED to "));
