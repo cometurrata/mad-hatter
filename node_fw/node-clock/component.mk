@@ -5,6 +5,7 @@ PROJECT_PATH =  $(mkfile_dir)/..
 include $(PROJECT_PATH)/common.mk
 
 ARDUINO_LIBRARIES := SparkFun_APDS9960
+ARDUINO_LIBRARIES += ArduinoJson5
 
 NODE_HOSTNAME=\"clock\"
 
