@@ -43,6 +43,7 @@ Shroom shroom4;
 #define SHROOM_4_TOUCH 3
 
 #include "shroom.h"
+#include "tasks.h"
 
 static int combinaisonIndex = 0;
 static uint8_t combinaison[5] = {1, 2, 3, 4, 3};
@@ -56,7 +57,7 @@ void checkCombinaison(int id)
 		if (combinaisonIndex >= 4)
 		{
 			combinaisonIndex = 0;
-			sendNodeUpdate("{\"status\": \"solved\"}");
+			nodeMushrooms.setSolved(true);
 		}
 	}
 	else {
