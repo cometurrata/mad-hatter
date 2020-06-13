@@ -28,6 +28,12 @@ void onActuate(HttpRequest &request, HttpResponse &response)
     response.sendString("OK");
 }
 
+void onWifiOk()
+{
+    startWebServer();
+    serverAddRoute("/actuate", onActuate);
+}
+
 // Will be called when WiFi hardware and software initialization was finished
 // And system initialization was completed
 static void ready()
@@ -40,6 +46,7 @@ static void ready()
     Wifi.setSSID(WIFI_SSID);
     Wifi.setPassword(WIFI_PASSWORD);
     Wifi.startConnect();
+    Wifi.setOnConnectUserCb(onWifiOk);
 
     NodeCat.addNodeType(Node::NodeTypeEnum::ACTUATOR_)
         .setHostname(NODE_HOSTNAME)
