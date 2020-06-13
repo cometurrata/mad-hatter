@@ -1,5 +1,6 @@
 #include "http_client.h"
 #include <stdint.h>
+#include "wifi.h"
 
 ServerCommunicator &ServerCommunicator::setOnHttpRequestResponseCallback(RequestCompletedDelegate onHttpRequestResponse)
 {

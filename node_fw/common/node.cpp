@@ -6,11 +6,11 @@ Node &Node::addNodeType(NodeTypeEnum type)
 	return *this;
 }
 
-Node &Node::start();
+Node &Node::start()
 {
     updateTimer.initializeMs(HEARTBEAT_TIME_MS,std::bind(&Node::update, this)).start();
+	return *this;
 }
-
 
 Node &Node::setHostname(String target)
 {

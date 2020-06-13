@@ -16,29 +16,6 @@ uint8_t trigger_value[18] = {LOW};
 
 void trigger_task()
 {
-    for (int i = 0; i < 18; i++)
-    {
-        if (trigger_enabled[i])
-        {
-            int value = digitalRead(i);
-            if (digitalRead(i) == trigger_value[i])
-            {
-                if (trigger_sent[i] == false)
-                {
-                    sendNodeUpdate("{"
-                                   "\"pin\":" +
-                                   String(i) +
-                                   ", \"value\":" + String(value) +
-                                   "}");
-                    trigger_sent[i] = true;
-                }
-            }
-            else
-            {
-                trigger_sent[i] = false;
-            }
-        }
-    }
 }
 
 void onConfigurePin(HttpRequest &request, HttpResponse &response)

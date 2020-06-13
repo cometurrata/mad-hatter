@@ -9,16 +9,12 @@
 #define ON HIGH
 #define OFF LOW
 
-static Timer heartBeatTimer;
+Node NodeCat;
 static Timer actuateTimer;
 
 static int pinStatus = OFF;
 static int actuateCount = 0;
 
-void nodeHeartBeatInit()
-{
-    heartBeatTimer.initializeMs(HEARTBEAT_TIME_MS, sendHeartBeat).start();
-}
 
 void nodeCatInit()
 {

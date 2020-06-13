@@ -1,11 +1,12 @@
-#ifndef __NODE_TASKS__H__
-#define __NODE_TASKS__H__
+#pragma once
 
-void nodeHeartBeatInit(void);
+#include "node.h"
+
 void nodeCatInit(void);
 void actuateCallback(void);
 void catActuate(void);
 int turnOn(void);
 int turnOff(void);
 
-#endif /* __NODE_TASKS__H__ */
+extern Node NodeCat;
+

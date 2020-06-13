@@ -1,5 +1,4 @@
 #include "wifi.h"
-#include "debug.h"
 
 #define TIME_BEFORE_RESET 20
 
