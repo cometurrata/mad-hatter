@@ -5,7 +5,7 @@
 # Including board Makefile.
 # include ./Makefile-board.mk
 
-# COMPONENT_CFLAGS :=
+# COMPONENT_CXXFLAGS :=
 # COMPONENT_CXXFLAGS :=
 
 
