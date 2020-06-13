@@ -57,7 +57,7 @@ void checkCombinaison(int id)
 		if (combinaisonIndex >= 4)
 		{
 			combinaisonIndex = 0;
-			nodeMushrooms.setSolved(true);
+			nodeMushrooms.setSolved(true).update();
 		}
 	}
 	else {
