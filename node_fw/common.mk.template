@@ -50,9 +50,9 @@ COM_SPEED_SERIAL = $(COM_SPEED)
 DISABLE_SPIFFS = 1
 CUSTOM_HEAP = 1
 ENABLE_ESPCONN = 0
+ENABLE_SSL = 0
 # SPIFF_FILES = files
 ARDUINO_LIBRARIES = ArduinoJson5
-
 
 # # Use minicom as terminal
 # TERMINAL = minicom -D $(COM_PORT) -b $(COM_SPEED_SERIAL) /Volumes/case-sensitive/opt/minicom.config

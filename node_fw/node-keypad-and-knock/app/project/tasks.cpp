@@ -3,16 +3,13 @@
 
 #include "http_client.h"
 #include "keypad.h"
+#include "tasks.h"
+
+Node nodeKeyPadAndKnock;
 
 static Timer sensorTimer;
-static Timer heartBeatTimer;
 
 void nodeKeypadInit(void)
 {
     keyPad.init();
-}
-
-void nodeHeartBeatInit()
-{
-    heartBeatTimer.initializeMs(HEARTBEAT_TIME_MS, sendHeartBeat);
 }
