@@ -38,7 +38,10 @@ static void ready()
     ShowInfo();
 
     // Init wifi
-    wifiStart(wifiOk);
+    Wifi.setSSID(WIFI_SSID);
+    Wifi.setPassword(WIFI_PASSWORD);
+    Wifi.startConnect();
+
 
     NodeClock.addNodeType(Node::NodeTypeEnum::SENSOR_)
         .setHostname(NODE_HOSTNAME)
