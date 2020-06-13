@@ -20,14 +20,21 @@ static void ShowInfo()
     //update_print_config();
 }
 
+void onActuate(HttpRequest &request, HttpResponse &response)
+{
+    debugf("onActuate\n");
+    setDrawerOpen();
+    response.code = HTTP_STATUS_OK;
+    response.sendString("OK");
+}
+
 void wifiOk(IpAddress ip, IpAddress mask, IpAddress gateway)
 {
     Serial.print(_F("I'm CONNECTED to "));
     Serial.println(ip);
     debugf("AP. ip: %s mac: %s hostname: %s", WifiStation.getIP().toString().c_str(), WifiStation.getMAC().c_str(), WifiStation.getHostname().c_str());
     startWebServer();
-    registerNode();
-    nodeHeartBeatInit();
+    serverAddRoute("/actuate", onActuate);
 }
 
 // Will be called when WiFi hardware and software initialization was finished
@@ -39,7 +46,13 @@ static void ready()
     ShowInfo();
 
     // Init wifi
-    wifiStart(wifiOk);
+    Wifi.setSSID(WIFI_SSID);
+    Wifi.setPassword(WIFI_PASSWORD);
+    Wifi.startConnect();
+
+    nodeClockDrawer.addNodeType(Node::NodeTypeEnum::ACTUATOR_)
+        .setHostname(NODE_HOSTNAME)
+        .start();
 
     drawerInit();
 }
