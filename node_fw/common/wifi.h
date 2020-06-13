@@ -3,6 +3,7 @@
 
 #include <user_config.h>
 #include <SmingCore.h>
+#include "http_server.h"
 
 class WifiClass
 {
