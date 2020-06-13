@@ -17,6 +17,7 @@ private:
     Timer taskTimer;
     void task();
     bool patternEncountered = false;
+    bool hasPatternBeenEncountered = false;
     int nextGestureIndex = 0;
 
     typedef enum

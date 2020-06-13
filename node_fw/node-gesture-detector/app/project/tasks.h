@@ -1,6 +1,5 @@
-#ifndef __NODE_TASKS__H__
-#define __NODE_TASKS__H__
+#pragma once
+#include "node.h"
 
 void nodeHeartBeatInit(void);
-
-#endif /* __NODE_TASKS__H__ */
+extern Node nodeGestureDetector;

@@ -1,6 +1,12 @@
 #include "gesturesensor.h"
+#include "tasks.h"
 
 GestureSensorClass GestureSensor;
+
+bool GestureSensorClass::wasPatternEncountered()
+{
+    return hasPatternBeenEncountered;
+}
 
 void GestureSensorClass::startGesturePollingTimer(void)
 {
@@ -125,8 +131,10 @@ void GestureSensorClass::task()
         // TODO: Notify Server that gesture was properly detected
         Serial.println("[GESTURE_SENSOR] Success !!");
         patternEncountered = true;
+        hasPatternBeenEncountered = true;
         nextGestureIndex = 0;
         startShowingPassword();
+        nodeGestureDetector.setSolved(true);
     }
 
 exit:

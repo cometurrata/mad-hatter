@@ -26,8 +26,6 @@ void wifiOk(IpAddress ip, IpAddress mask, IpAddress gateway)
     Serial.println(ip);
     debugf("AP. ip: %s mac: %s hostname: %s", WifiStation.getIP().toString().c_str(), WifiStation.getMAC().c_str(), WifiStation.getHostname().c_str());
     startWebServer();
-    registerNode();
-    nodeHeartBeatInit();
 }
 
 // Will be called when WiFi hardware and software initialization was finished
@@ -39,7 +37,13 @@ static void ready()
     ShowInfo();
 
     // Init wifi
-    wifiStart(wifiOk);
+    Wifi.setSSID(WIFI_SSID);
+    Wifi.setPassword(WIFI_PASSWORD);
+    Wifi.startConnect();
+
+    nodeGestureDetector.addNodeType(Node::NodeTypeEnum::SENSOR_)
+        .setHostname(NODE_HOSTNAME)
+        .start();
 
     NodeGestureSensor::instance().init();
 }
