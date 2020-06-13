@@ -11,7 +11,6 @@ void connectOk(IpAddress ip, IpAddress mask, IpAddress gateway)
     Serial.println(ip);
     debugf("AP. ip: %s mac: %s hostname: %s", WifiStation.getIP().toString().c_str(), WifiStation.getMAC().c_str(), WifiStation.getHostname().c_str());
     startWebServer();
-    registerNode();
 }
 
 // Will be called when WiFi station was disconnected

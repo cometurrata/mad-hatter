@@ -1,11 +1,12 @@
 #include <stdint.h>
 #include <SmingCore.h>
 
+#include "tasks.h"
 #include "http_client.h"
 #include "clock.h"
 
+Node NodeClock;
 static Timer sensorTimer;
-static Timer heartBeatTimer;
 
 void sensorTask()
 {
@@ -13,10 +14,7 @@ void sensorTask()
     #ifdef VERBOSE
     	debugf("resolved : %s", val ? "true" : "false");
 	#endif
-    if (val)
-    {
-        sendNodeUpdate("{\"status\": \"solved\"}");
-    }
+    NodeClock.setSolved(val);
 }
 
 void nodeClockInit(void)
@@ -25,7 +23,3 @@ void nodeClockInit(void)
     sensorTimer.initializeMs(300, sensorTask).start();
 }
 
-void nodeHeartBeatInit()
-{
-    heartBeatTimer.initializeMs(HEARTBEAT_TIME_MS, sendHeartBeat).start();
-}

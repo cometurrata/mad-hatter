@@ -1,7 +1,6 @@
-#ifndef __NODE_TASKS__H__
-#define __NODE_TASKS__H__
+#pragma once
+
+#include "node.h"
 
 void nodeClockInit(void);
-void nodeHeartBeatInit(void);
-
-#endif /* __NODE_TASKS__H__ */
+extern Node NodeClock;

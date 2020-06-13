@@ -4,7 +4,7 @@ PROJECT_PATH =  $(mkfile_dir)/..
 
 include $(PROJECT_PATH)/common.mk
 
-ARDUINO_LIBRARIES := Adafruit_NeoPixel
+ARDUINO_LIBRARIES += Adafruit_NeoPixel
 
 
 NODE_HOSTNAME=\"mushrooms\"

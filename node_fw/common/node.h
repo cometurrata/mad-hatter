@@ -12,16 +12,18 @@ public:
 		SENSOR_
 	};
 
+	Node &start();
 	Node &addNodeType(Node::NodeTypeEnum type);
 	Node &setHostname(String target);
-	Node &Register(String target);
-
+	Node &update();
+	Node &setSolved(bool target);
 
 private:
+	ServerCommunicator serverCommunicator;
+
 	Vector<enum Node::NodeTypeEnum> types;
-	String hostname;
-	bool solved;
-
+	String hostname = "";
+	bool solved = false;
+	Timer updateTimer;
 	JsonObjectStream *buildJsonStream();
-
 };

@@ -1,33 +1,45 @@
-#include <stdint.h>
-#include <SmingCore.h>
 #include "http_client.h"
+#include <stdint.h>
 
-static HttpClient httpClient;
-
-void sendRegisterRequest(ReadWriteStream *data, RequestCompletedDelegate onHttpRequestResponse)
+ServerCommunicator &ServerCommunicator::setOnHttpRequestResponseCallback(RequestCompletedDelegate onHttpRequestResponse)
 {
-    RequestCompletedDelegate delegate = onHttpRequestResponse ? onHttpRequestResponse : onNodeUpdateRequestResponse;
+    onHttpRequestResponsecb = onHttpRequestResponse;
+    return *this;
+}
 
-    String serverAddress = "http://" SERVER_IP ":" SERVER_PORT "/";
-    HttpRequest *postRequest = new HttpRequest(URL(serverAddress + "register"));
+ServerCommunicator &ServerCommunicator::sendNodeUpdate(ReadWriteStream *data)
+{
+    if (!Wifi.ensureConnected())
+    {
+        debugf("Not connected to Wifi. Not sending httprequest");
+    }
+    else
+    {
+        debugf("sendNodeUpdate");
+        HttpRequest *postRequest = new HttpRequest(URL(getServerAddress()));
 
-/*    
-    debugf("Sending request to : %s", serverAddress.c_str());
-    debugf("path : %s", path.c_str());
-    debugf("data : %s", data.c_str());
- */   
+        postRequest->setMethod(HTTP_POST)
+            ->setHeaders(getHttpHeaders())
+            ->setBody(data);
 
-    HttpHeaders headers;
-    headers["User-Agent"] = "HttpClient/Sming"; // Prefer use of enumerated type for standard field names
-    headers["X-Powered-By"] = "Sming";          // Use text for non-standard field names
-    headers["Content-Type"] = "application/json";
+        this->sendHttpRequest(postRequest);
+    }
 
-    postRequest->setMethod(HTTP_POST)
-        ->setHeaders(headers)
-        ->setBody(data)
-        ->onRequestComplete(delegate);
+    return *this;
+}
 
-    bool success = httpClient.send(postRequest);
+ServerCommunicator &ServerCommunicator::sendHttpRequest(HttpRequest *req)
+{
+    if (onHttpRequestResponsecb != nullptr)
+    {
+        req->onRequestComplete(onHttpRequestResponsecb);
+    }
+    else
+    {
+        req->onRequestComplete(RequestCompletedDelegate(&ServerCommunicator::defaultRequestCompleteCb, this));
+    }
+
+    bool success = httpClient.send(req);
     if (success)
     {
         debugf("Successfully sent request\n");
@@ -36,41 +48,10 @@ void sendRegisterRequest(ReadWriteStream *data, RequestCompletedDelegate onHttpR
     {
         debugf("Failed to send request\n");
     }
+    return *this;
 }
 
-void sendHttpRequest(String path, String data, RequestCompletedDelegate onHttpRequestResponse)
-{
-    String serverAddress = "http://" SERVER_IP ":" SERVER_PORT "/";
-    HttpRequest *postRequest = new HttpRequest(URL(serverAddress + path));
-
-/*    
-    debugf("Sending request to : %s", serverAddress.c_str());
-    debugf("path : %s", path.c_str());
-    debugf("data : %s", data.c_str());
- */   
-
-    HttpHeaders headers;
-    headers["User-Agent"] = "HttpClient/Sming"; // Prefer use of enumerated type for standard field names
-    headers["X-Powered-By"] = "Sming";          // Use text for non-standard field names
-    headers["Content-Type"] = "application/json";
-
-    postRequest->setMethod(HTTP_POST)
-        ->setHeaders(headers)
-        ->setBody(data)
-        ->onRequestComplete(onHttpRequestResponse);
-
-    bool success = httpClient.send(postRequest);
-    if (success)
-    {
-        debugf("Successfully sent request\n");
-    }
-    else
-    {
-        debugf("Failed to send request\n");
-    }
-}
-
-int onNodeUpdateRequestResponse(HttpConnection &connection, bool success)
+int ServerCommunicator::defaultRequestCompleteCb(HttpConnection &connection, bool success)
 {
     /*
     debugf("\n=========[ URL: %s ]============", connection.getRequest()->uri.toString().c_str());
@@ -85,13 +66,17 @@ int onNodeUpdateRequestResponse(HttpConnection &connection, bool success)
     return 0; // return 0 on success in your callbacks
 }
 
-void sendNodeUpdate(String data)
+String ServerCommunicator::getServerAddress()
 {
-    debugf("sendNodeUpdate");
-    sendHttpRequest(String(NODE_HOSTNAME) + "/update", data, onNodeUpdateRequestResponse);
+    String serverAddress = "http://" SERVER_IP ":" SERVER_PORT "/";
+    return serverAddress;
 }
 
-void sendHeartBeat()
+HttpHeaders ServerCommunicator::getHttpHeaders()
 {
-    sendHttpRequest(String(NODE_HOSTNAME) + "/alive", "heartbeat", onNodeUpdateRequestResponse);
+    HttpHeaders headers;
+    headers["User-Agent"] = "HttpClient/Sming"; // Prefer use of enumerated type for standard field names
+    headers["X-Powered-By"] = "Sming";          // Use text for non-standard field names
+    headers["Content-Type"] = "application/json";
+    return headers;
 }

@@ -6,16 +6,28 @@ Node &Node::addNodeType(NodeTypeEnum type)
 	return *this;
 }
 
+Node &Node::start();
+{
+    updateTimer.initializeMs(HEARTBEAT_TIME_MS,std::bind(&Node::update, this)).start();
+}
+
+
 Node &Node::setHostname(String target)
 {
 	hostname = target;
 	return *this;
 }
 
-Node &Node::Register(String target)
+Node &Node::setSolved(bool target)
 {
-	JsonObjectStream * data = buildJsonStream();
-	sendRegisterRequest(data, NULL);
+	this->solved = true;
+	return *this;
+}
+
+Node &Node::update()
+{
+	JsonObjectStream *data = buildJsonStream();
+	serverCommunicator.sendNodeUpdate(data);
 	return *this;
 }
 
@@ -29,12 +41,10 @@ JsonObjectStream *Node::buildJsonStream()
 	json["hostname"] = hostname;
 
 	JsonArray &types = json.createNestedArray("types");
-	for (int i = 0 ; i < this->types.size(); i++)
+	for (int i = 0; i < this->types.size(); i++)
 	{
 		types.add(this->types[i]);
 	}
 
-
 	return stream;
 }
-

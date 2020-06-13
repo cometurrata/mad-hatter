@@ -1,12 +1,19 @@
-#ifndef __HTTP_CLIENT__H__
-#define __HTTP_CLIENT__H__
+#pragma once
 
 #include <SmingCore.h>
 
-void sendHttpRequest(String path, String data, RequestCompletedDelegate onHttpRequestResponse);
-void sendNodeUpdate(String data);
-void sendHeartBeat(void);
-int onNodeUpdateRequestResponse(HttpConnection &connection, bool success);
-void sendRegisterRequest(ReadWriteStream *data, RequestCompletedDelegate onHttpRequestResponse);
+class ServerCommunicator
+{
+private:
+    HttpClient httpClient;
+    RequestCompletedDelegate onHttpRequestResponsecb = nullptr;
+    int defaultRequestCompleteCb(HttpConnection &connection, bool success);
 
-#endif /* __HTTP_CLIENT__H__ */
+    String getServerAddress();
+    HttpHeaders getHttpHeaders();
+    ServerCommunicator &sendHttpRequest(HttpRequest *req);
+
+public:
+    ServerCommunicator &setOnHttpRequestResponseCallback(RequestCompletedDelegate onHttpRequestResponse);
+    ServerCommunicator &sendNodeUpdate(ReadWriteStream *data);
+};
