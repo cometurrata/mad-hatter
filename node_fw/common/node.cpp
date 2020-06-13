@@ -43,7 +43,18 @@ JsonObjectStream *Node::buildJsonStream()
 	JsonArray &types = json.createNestedArray("types");
 	for (int i = 0; i < this->types.size(); i++)
 	{
-		types.add(this->types[i]);
+		switch (this->types[i])
+		{
+		case Node::NodeTypeEnum::ACTUATOR_:
+			types.add("actuator");
+			break;
+		
+		case Node::NodeTypeEnum::SENSOR_:
+			types.add("sensor");
+			break;
+		default:
+			break;
+		}
 	}
 
 	return stream;
