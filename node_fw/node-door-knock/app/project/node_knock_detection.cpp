@@ -3,6 +3,7 @@
 
 #include "http_client.h"
 #include "knockdetection.h"
+#include "tasks.h"
 
 static Timer sensorTimer;
 
@@ -13,16 +14,7 @@ void sendKnockDetection(void)
     if (getKnockDetected())
     {
         debugf("Knock Detected");
-        if (!infoSent)
-        {
-            infoSent = true;
-            sendNodeUpdate("{\"status\": \"solved\"}");
-            //sendNodeUpdate("event");
-        }
-    }
-    else
-    {
-        infoSent = false;
+        nodeDoorKnock.setSolved(true);
     }
 }
 

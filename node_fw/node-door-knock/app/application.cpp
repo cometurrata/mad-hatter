@@ -42,8 +42,6 @@ void wifiOk(IpAddress ip, IpAddress mask, IpAddress gateway)
     debugf("AP. ip: %s mac: %s hostname: %s", WifiStation.getIP().toString().c_str(), WifiStation.getMAC().c_str(), WifiStation.getHostname().c_str());
     startWebServer();
     serverAddRoute("/actuate", onActuate);
-    registerNode();
-    nodeHeartBeatInit();
 }
 
 // Will be called when WiFi hardware and software initialization was finished
@@ -55,7 +53,14 @@ static void ready()
     ShowInfo();
 
     // Init wifi
-    wifiStart(wifiOk);
+    Wifi.setSSID(WIFI_SSID);
+    Wifi.setPassword(WIFI_PASSWORD);
+    Wifi.startConnect();
+
+    nodeDoorKnock.addNodeType(Node::NodeTypeEnum::SENSOR_)
+            .addNodeType(Node::NodeTypeEnum::ACTUATOR_)
+        .setHostname(NODE_HOSTNAME)
+        .start();
 
     //  --------- EXAMPLE CODE -----------
     nodeKnockDetectionInit();

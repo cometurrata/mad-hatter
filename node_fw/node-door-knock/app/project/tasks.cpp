@@ -4,6 +4,7 @@
 #include "http_client.h"
 #include "tasks.h"
 
+Node nodeDoorKnock;
 
 #define ACTUATE_DUR  60 * 1000
 #define ACTUATE_COUNT 1
@@ -15,11 +16,6 @@ static Timer actuateTimer;
 
 static int pinStatus = OFF;
 static int actuateCount = 0;
-
-void nodeHeartBeatInit()
-{
-    heartBeatTimer.initializeMs(HEARTBEAT_TIME_MS, sendHeartBeat).start();
-}
 
 void knockActuate() {
 	actuateCount = 0;
