@@ -14,7 +14,11 @@ public:
         pauseDuration = 200;
     }
 
+    void runPattern(uint16_t *pattern, int patternLen);
+
 private:
+    Vector<uint16_t> pattern;
+
     uint8_t knockToMake = 0;
     uint8_t knockingStep = 0;
 
@@ -24,4 +28,22 @@ private:
     Timer timer;
 };
 
-extern KnockerClass knocker;
+class PatternKnocker
+{
+public:
+    void setPattern(uint16_t *pattern, int patternLen);
+    void run();
+
+private:
+    void knockNow();
+    void releaseKnocker();
+    void task();
+
+    int patternIndex = 0;
+
+    Vector<uint16_t> pattern;
+    Timer releaseTimer;
+    Timer patternTimer;
+};
+
+extern KnockerClass Knocker;

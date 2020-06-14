@@ -7,6 +7,10 @@
 #include "node_register.h"
 //  --------- EXAMPLE CODE -----------
 #include "project/tasks.h"
+#include "project/keypad.h"
+#include "project/knocker.h"
+
+static PatternKnocker patternKnocker;
 
 static void ShowInfo()
 {
@@ -22,7 +26,9 @@ static void ShowInfo()
 void onActuate(HttpRequest &request, HttpResponse &response)
 {
     debugf("onActuate\n");
-    doKnock();
+    uint16_t pattern[] = {500, 250, 250, 250, 250};
+    patternKnocker.setPattern(pattern, 5);
+    patternKnocker.run();
     response.code = HTTP_STATUS_OK;
     response.sendString("OK");
 }
@@ -53,7 +59,7 @@ static void ready()
         .start();
 
     //  --------- EXAMPLE CODE -----------
-    nodeKeypadInit();
+    KeyPad.init();
 }
 
 void init()

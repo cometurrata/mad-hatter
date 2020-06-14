@@ -6,10 +6,3 @@
 #include "tasks.h"
 
 Node nodeKeyPadAndKnock;
-
-static Timer sensorTimer;
-
-void nodeKeypadInit(void)
-{
-    keyPad.init();
-}
