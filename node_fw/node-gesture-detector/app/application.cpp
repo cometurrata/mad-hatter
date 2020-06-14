@@ -9,6 +9,8 @@
 #include "project/node_gesture_sensor.h"
 #include "project/tasks.h"
 
+static LedController ledController;
+
 static void ShowInfo()
 {
     Serial.printf("\r\nSDK: v%s\r\n", system_get_sdk_version());
@@ -45,7 +47,8 @@ static void ready()
         .setHostname(NODE_HOSTNAME)
         .start();
 
-    NodeGestureSensor::instance().init();
+    ledController.init();
+    GestureSensor.init(&ledController);
 }
 
 void init()
