@@ -23,7 +23,7 @@ static void ShowInfo()
 void onActuate(HttpRequest &request, HttpResponse &response)
 {
     debugf("onActuate\n");
-    nodeFigurePlotterInit();
+    nodeFigurePlotterShowPassword();
     response.code = HTTP_STATUS_OK;
     response.sendString("OK");
 }

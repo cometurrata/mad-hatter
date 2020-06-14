@@ -1,7 +1,20 @@
-#ifndef __NODE_EXAMPLE__H__
-#define __NODE_EXAMPLE__H__
+#pragma once
 
-void nodeFigurePlotterInit(void);
-void nodeHeartBeatInit(void);
+class FiguresPlotter
+{
+private:
+    static const uint8_t password[4] = {7, 3, 8, 3};
+    uint8_t paswordIdx = 0;
 
-#endif /* __NODE_EXAMPLE__H__ */
+    Timer showPasswordTimer;
+    Timer initTimer;
+    int figure = 0;
+
+    void task();
+    void showPasswordTask();
+
+public:
+    void init(void);
+    void startShowingPassword(void);
+};
+
