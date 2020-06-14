@@ -3,24 +3,20 @@
 
 #include "http_client.h"
 #include "musicbox.h"
+#include "tasks.h"
 
+Node musicBoxNode;
 static Timer sensorTimer;
-static Timer heartBeatTimer;
 
 void sensorTask()
 {
     if (MusicBox.isMelodyCorrect())
     {
-        sendNodeUpdate("Clock is Well set");
+        musicBoxNode.setSolved(true).sendUpdateNow();
     }
 }
 
-void nodeClockInit(void)
+void nodeMusicBoxInit(void)
 {
     sensorTimer.initializeMs(3 * 1000, sensorTask).start();
-}
-
-void nodeHeartBeatInit()
-{
-    heartBeatTimer.initializeMs(30 * 1000, sendHeartBeat);
 }

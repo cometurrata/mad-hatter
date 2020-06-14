@@ -1,7 +1,6 @@
-#ifndef __NODE_EXAMPLE__H__
-#define __NODE_EXAMPLE__H__
+#pragma once
 
-void nodeClockInit(void);
-void nodeHeartBeatInit(void);
+#include "node.h"
 
-#endif /* __NODE_EXAMPLE__H__ */
+void nodeMusicBoxInit(void);
+extern Node musicBoxNode;
