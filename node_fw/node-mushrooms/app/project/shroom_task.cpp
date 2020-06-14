@@ -50,34 +50,34 @@ static uint8_t combinaison[5] = {1, 2, 3, 4, 3};
 
 void checkCombinaison(int id)
 {
-	if (id == combinaison[combinaisonIndex])
-	{
-		debugf("checkCombinaison index: %d", combinaisonIndex);
-		combinaisonIndex ++;
-		if (combinaisonIndex >= 4)
-		{
-			combinaisonIndex = 0;
-			nodeMushrooms.setSolved(true).update();
-		}
-	}
-	else {
-		combinaisonIndex = 0;
-	}
+    if (id == combinaison[combinaisonIndex])
+    {
+        debugf("checkCombinaison index: %d", combinaisonIndex);
+        combinaisonIndex++;
+        if (combinaisonIndex >= 4)
+        {
+            combinaisonIndex = 0;
+            nodeMushrooms.setSolved(true).sendUpdateNow();
+        }
+    }
+    else
+    {
+        combinaisonIndex = 0;
+    }
 }
 
 void onTouch(String name)
 {
-	debugf("touched: %s", name.c_str());
-	checkCombinaison(name.toInt());
+    debugf("touched: %s", name.c_str());
+    checkCombinaison(name.toInt());
 }
 
 void shroomInit()
 {
-	Wire.pins(SDA_PIN, SCL_PIN); // SDA, SCL
-	mcp.begin();
-	shroom1.init(mcp, SHROOM_1_TOUCH, SHROOM_1_PIN, NUMPIXELS, "1", onTouch);
-	shroom2.init(mcp, SHROOM_2_TOUCH, SHROOM_2_PIN, NUMPIXELS, "2", onTouch);
-	shroom3.init(mcp, SHROOM_3_TOUCH, SHROOM_3_PIN, NUMPIXELS, "3", onTouch);
-	shroom4.init(mcp, SHROOM_4_TOUCH, SHROOM_4_PIN, NUMPIXELS, "4", onTouch);
+    Wire.pins(SDA_PIN, SCL_PIN); // SDA, SCL
+    mcp.begin();
+    shroom1.init(mcp, SHROOM_1_TOUCH, SHROOM_1_PIN, NUMPIXELS, "1", onTouch);
+    shroom2.init(mcp, SHROOM_2_TOUCH, SHROOM_2_PIN, NUMPIXELS, "2", onTouch);
+    shroom3.init(mcp, SHROOM_3_TOUCH, SHROOM_3_PIN, NUMPIXELS, "3", onTouch);
+    shroom4.init(mcp, SHROOM_4_TOUCH, SHROOM_4_PIN, NUMPIXELS, "4", onTouch);
 }
-

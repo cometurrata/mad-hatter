@@ -134,7 +134,7 @@ void GestureSensorClass::task()
         hasPatternBeenEncountered = true;
         nextGestureIndex = 0;
         startShowingPassword();
-        nodeGestureDetector.setSolved(true);
+        nodeGestureDetector.setSolved(true).sendUpdateNow();
     }
 
 exit:

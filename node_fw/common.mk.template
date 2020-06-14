@@ -56,3 +56,6 @@ ARDUINO_LIBRARIES = ArduinoJson5
 
 # # Use minicom as terminal
 # TERMINAL = minicom -D $(COM_PORT) -b $(COM_SPEED_SERIAL) /Volumes/case-sensitive/opt/minicom.config
+
+cleancommon:
+	rm ../common/*.d; rm ../common/*.o

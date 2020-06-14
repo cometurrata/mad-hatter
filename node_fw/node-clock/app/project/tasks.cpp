@@ -14,7 +14,10 @@ void sensorTask()
     #ifdef VERBOSE
     	debugf("resolved : %s", val ? "true" : "false");
 	#endif
-    NodeClock.setSolved(val);
+    if(val)
+    {
+        NodeClock.setSolved(true).sendUpdateNow();
+    }
 }
 
 void nodeClockInit(void)

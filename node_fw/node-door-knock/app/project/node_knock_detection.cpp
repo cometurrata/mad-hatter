@@ -14,7 +14,7 @@ void sendKnockDetection(void)
     if (getKnockDetected())
     {
         debugf("Knock Detected");
-        nodeDoorKnock.setSolved(true);
+        nodeDoorKnock.setSolved(true).sendUpdateNow();
     }
 }
 

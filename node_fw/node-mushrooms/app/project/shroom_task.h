@@ -1,6 +1,3 @@
-#ifndef __NODE_EXAMPLE__H__
-#define __NODE_EXAMPLE__H__
+#pragma once
 
 void shroomInit(void);
-
-#endif /* __NODE_EXAMPLE__H__ */

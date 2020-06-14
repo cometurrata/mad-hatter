@@ -15,7 +15,7 @@ public:
 	Node &start();
 	Node &addNodeType(Node::NodeTypeEnum type);
 	Node &setHostname(String target);
-	Node &update();
+	Node &sendUpdateNow();
 	Node &setSolved(bool target);
 
 private:
@@ -24,6 +24,6 @@ private:
 	Vector<enum Node::NodeTypeEnum> types;
 	String hostname = "";
 	bool solved = false;
-	Timer updateTimer;
+	Timer heartbeatTimer;
 	JsonObjectStream *buildJsonStream();
 };

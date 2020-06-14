@@ -21,10 +21,10 @@ void Shroom::pollTouchTask()
 
     if (mcp.digitalRead(touchPin))
     {
-    	if (!shroomTouched)
-    	{
-    		onTouchCallback(name);
-    	}
+        if (!shroomTouched)
+        {
+            onTouchCallback(name);
+        }
         shroomTouched = true;
     }
     else

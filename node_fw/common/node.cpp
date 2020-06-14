@@ -8,7 +8,7 @@ Node &Node::addNodeType(NodeTypeEnum type)
 
 Node &Node::start()
 {
-    updateTimer.initializeMs(HEARTBEAT_TIME_MS,std::bind(&Node::update, this)).start();
+    heartbeatTimer.initializeMs(HEARTBEAT_TIME_MS,std::bind(&Node::sendUpdateNow, this)).start();
 	return *this;
 }
 
@@ -24,7 +24,7 @@ Node &Node::setSolved(bool target)
 	return *this;
 }
 
-Node &Node::update()
+Node &Node::sendUpdateNow()
 {
 	JsonObjectStream *data = buildJsonStream();
 	serverCommunicator.sendNodeUpdate(data);
