@@ -18,41 +18,41 @@ static int pinStatus = OFF;
 static int actuateCount = 0;
 
 void knockActuate() {
-	actuateCount = 0;
-	turnOn();
-	actuateCount ++;
-	actuateTimer.initializeMs(ACTUATE_DUR, actuateCallback).start();
+    actuateCount = 0;
+    turnOn();
+    actuateCount ++;
+    actuateTimer.initializeMs(ACTUATE_DUR, actuateCallback).start();
 }
 
 int turnOn() {
-	debugf("turnOn\n");
-	pinStatus = ON;
-	digitalWrite(0, pinStatus);
-	return pinStatus;
+    debugf("turnOn\n");
+    pinStatus = ON;
+    digitalWrite(0, pinStatus);
+    return pinStatus;
 }
 
 int turnOff() {
-	debugf("turnOff\n");
-	pinStatus = OFF;
-	digitalWrite(0, pinStatus);
-	return pinStatus;
+    debugf("turnOff\n");
+    pinStatus = OFF;
+    digitalWrite(0, pinStatus);
+    return pinStatus;
 }
 
 void actuateCallback() {
-	debugf("actuateCallback\n");
+    debugf("actuateCallback\n");
 
-	if (actuateCount >= ACTUATE_COUNT*2) {
-		turnOff();
-		actuateTimer.stop();
-		return;
-	}
-	debugf("pinStatus: %d", pinStatus);
+    if (actuateCount >= ACTUATE_COUNT*2) {
+        turnOff();
+        actuateTimer.stop();
+        return;
+    }
+    debugf("pinStatus: %d", pinStatus);
 
-	if (pinStatus == HIGH) {
-		turnOn();
-	}
-	else {
-		turnOff();
-	}
-	actuateCount++;
+    if (pinStatus == HIGH) {
+        turnOn();
+    }
+    else {
+        turnOff();
+    }
+    actuateCount++;
 }
