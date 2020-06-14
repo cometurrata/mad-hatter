@@ -6,7 +6,7 @@
 #include "http_server.h"
 #include "node_register.h"
 //  --------- EXAMPLE CODE -----------
-#include "project/node_gesture_sensor.h"
+#include "project/gesturesensor.h"
 #include "project/tasks.h"
 
 static LedController ledController;

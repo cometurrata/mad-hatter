@@ -59,7 +59,7 @@ public:
     }
 
     void turnOff()
-    {extern
+    {
         turnOff(currentLedOnId);
     }
 
