@@ -6,7 +6,7 @@
 #include "http_server.h"
 #include "node_register.h"
 //  --------- EXAMPLE CODE -----------
-#include "project/node_figures_plotter.h"
+#include "project/figuresplotter.h"
 #include "project/tasks.h"
 
 static void ShowInfo()
