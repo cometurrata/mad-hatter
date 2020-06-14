@@ -9,6 +9,8 @@
 #include "project/figuresplotter.h"
 #include "project/tasks.h"
 
+static FiguresPlotter figuresPlotter;
+
 static void ShowInfo()
 {
     Serial.printf("\r\nSDK: v%s\r\n", system_get_sdk_version());
@@ -23,7 +25,7 @@ static void ShowInfo()
 void onActuate(HttpRequest &request, HttpResponse &response)
 {
     debugf("onActuate\n");
-    nodeFigurePlotterShowPassword();
+    figuresPlotter.startShowingPassword();
     response.code = HTTP_STATUS_OK;
     response.sendString("OK");
 }
@@ -52,7 +54,7 @@ static void ready()
         .setHostname(NODE_HOSTNAME)
         .start();
 
-    nodeFigurePlotterInit();
+    figuresPlotter.init();
 }
 
 void init()

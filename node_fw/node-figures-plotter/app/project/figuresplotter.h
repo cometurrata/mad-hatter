@@ -3,8 +3,8 @@
 class FiguresPlotter
 {
 private:
-    static const uint8_t password[4] = {7, 3, 8, 3};
-    uint8_t paswordIdx = 0;
+    static const uint8_t password[4];
+    uint8_t passwordIdx = 0;
 
     Timer showPasswordTimer;
     Timer initTimer;

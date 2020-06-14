@@ -21,13 +21,14 @@ void FiguresPlotter::task(void)
 void FiguresPlotter::init(void)
 {
     LedController::instance()->init();
-    initTimer.initializeMs(250, task).start();
+    LedController::instance()->setLightUpDuration(1000);
+    initTimer.initializeMs(250, std::bind(&FiguresPlotter::task, this)).start();
     figure = 0;
 }
 
 void FiguresPlotter::showPasswordTask()
 {
-    LedController::instance()->lighUpFigure(password[passwordIdx]);
+    LedController::instance()->lightUpFigure(password[passwordIdx]);
     passwordIdx++;
     if (passwordIdx < sizeof(FiguresPlotter::password))
     {
@@ -39,6 +40,6 @@ void FiguresPlotter::startShowingPassword(void)
 {
     passwordIdx = 0;
     initTimer.stop();
-    showPasswordTimer.initializeMs(1000, task).start();
+    showPasswordTimer.initializeMs(1000, std::bind(&FiguresPlotter::showPasswordTask, this)).start();
 }
 
