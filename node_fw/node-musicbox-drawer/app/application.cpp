@@ -27,7 +27,7 @@ void onActuate(HttpRequest &request, HttpResponse &response)
     response.sendString("OK");
 }
 
-void onWifiOk(IpAddress ip, IpAddress mask, IpAddress gateway)
+void onWifiOk()
 {
     startWebServer();
     serverAddRoute("/actuate", onActuate);
@@ -47,7 +47,7 @@ static void ready()
     Wifi.startConnect();
     Wifi.setOnConnectUserCb(onWifiOk);
 
-    nodeClockDrawer.addNodeType(Node::NodeTypeEnum::ACTUATOR_)
+    nodeMusicBoxDrawer.addNodeType(Node::NodeTypeEnum::ACTUATOR_)
         .setHostname(NODE_HOSTNAME)
         .start();
 
