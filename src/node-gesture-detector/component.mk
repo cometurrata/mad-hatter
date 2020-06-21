@@ -4,7 +4,7 @@ PROJECT_PATH =  $(mkfile_dir)/..
 
 include $(PROJECT_PATH)/common.mk
 
-NODE_HOSTNAME=\"gesture_sensor\"
+NODE_HOSTNAME=\"gesturesensor\"
 COMPONENT_CXXFLAGS += -DNODE_HOSTNAME=$(NODE_HOSTNAME)
 
 SMING_ARCH = Esp8266
