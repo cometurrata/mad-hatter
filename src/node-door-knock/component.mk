@@ -5,7 +5,7 @@ PROJECT_PATH =  $(mkfile_dir)/..
 include $(PROJECT_PATH)/common.mk
 
 
-NODE_HOSTNAME=\"doorknock\"
+NODE_HOSTNAME=\"doorknockandwardrobe\"
 COMPONENT_CXXFLAGS += -DNODE_HOSTNAME=$(NODE_HOSTNAME)
 
 SMING_ARCH := Esp8266
