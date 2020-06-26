@@ -4,5 +4,5 @@ PROJECT_PATH =  $(mkfile_dir)/..
 
 include $(PROJECT_PATH)/common.mk
 
-NODE_HOSTNAME=\"temperature_sensor\"
+NODE_HOSTNAME=\"temperature-sensor\"
 COMPONENT_CXXFLAGS += -DNODE_HOSTNAME=$(NODE_HOSTNAME)
