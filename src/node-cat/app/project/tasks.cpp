@@ -23,15 +23,11 @@ void nodeCatInit()
     digitalWrite(2, HIGH);
     digitalWrite(5, OFF);
 
-    actuateTimer.initializeMs(ACTUATE_DUR, actuateCallback);
 }
 
 void catActuate() {
 	debugf("startTimer\n");
-	actuateCount = 0;
 	turnOn();
-	actuateCount ++;
-	actuateTimer.start();
 }
 
 int turnOn() {
@@ -48,23 +44,4 @@ int turnOff() {
 	digitalWrite(2, pinStatus);
 	digitalWrite(5, pinStatus);
 	return pinStatus;
-}
-
-void actuateCallback() {
-	debugf("actuateCallback\n");
-
-	if (actuateCount >= ACTUATE_COUNT*2) {
-		turnOff();
-		actuateTimer.stop();
-		return;
-	}
-	debugf("pinStatus: %d", pinStatus);
-
-	if (pinStatus == HIGH) {
-		turnOn();
-	}
-	else {
-		turnOff();
-	}
-	actuateCount++;
 }
