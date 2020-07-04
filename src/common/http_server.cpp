@@ -26,6 +26,12 @@ static void onOta(HttpRequest &request, HttpResponse &response)
 
 static int onUpgrade(HttpServerConnection &connection, HttpRequest &request, HttpResponse &response)
 {
+    static bool locked = false;
+    if (locked)
+    {
+        return 0;
+    }
+    locked = true;
     ReadWriteStream *file = request.files["firmware"];
     OtaUpgradeStream *otaStream = static_cast<OtaUpgradeStream *>(file);
     debugf("onUpgrade !");
