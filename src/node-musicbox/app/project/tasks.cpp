@@ -18,5 +18,6 @@ void sensorTask()
 
 void nodeMusicBoxInit(void)
 {
+    MusicBox.init();
     sensorTimer.initializeMs(3 * 1000, sensorTask).start();
 }

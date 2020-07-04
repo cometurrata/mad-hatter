@@ -4,6 +4,9 @@ MusicBoxClass MusicBox;
 
 #define MAX_NB_OF_NOTES 15
 
+#define ON 0
+#define OFF 1
+
 void MusicBoxClass::task()
 {
     if (done)
@@ -13,21 +16,27 @@ void MusicBoxClass::task()
 
     for (int note = 0; note < NOTE_MAX; note++)
     {
-        if (mcp.digitalRead(note))
+
+        if (mcp.digitalRead(note) == ON)
         {
-            if (note == melody[nextNote])
+            Serial.printf("%s\n", descriptions[note]);
+            if (note == melody[nextNoteIdx])
             {
-                nextNote++;
+                nextNoteIdx++;
             }
-            else
+            else if (note >= 1)
             {
-                nextNote = 0;
+                if (note != melody[nextNoteIdx - 1])
+                {
+                    nextNoteIdx = 0;
+                }
             }
         }
     }
 
-    if (nextNote == sizeof(melody))
+    if (nextNoteIdx == NOTE_MAX)
     {
+        Serial.println("done");
         done = true;
     }
 }
@@ -35,7 +44,7 @@ void MusicBoxClass::task()
 void MusicBoxClass::reset()
 {
     done = false;
-    nextNote = 0;
+    nextNoteIdx = 0;
 }
 
 bool MusicBoxClass::isMelodyCorrect()
@@ -47,5 +56,10 @@ void MusicBoxClass::init()
 {
     Wire.pins(4, 5); // SDA, SCL
     mcp.begin();
+    for (int i = 0; i < 16; i++)
+    {
+        mcp.pinMode(i, INPUT);
+        mcp.pullUp(i, 1);
+    }
     procTimer.initializeMs(20, std::bind(&MusicBoxClass::task, this)).start();
 }
