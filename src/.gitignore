@@ -1,5 +1,5 @@
 Makefile-user.mk
-common.mk
+user.mk
 *.d
 *.o
 
