@@ -223,8 +223,9 @@ void startWebServer(void)
     server.paths.set("/ota", onOta);
     server.paths.set("/upgrade", new HttpMultipartResource(fileUploadMapper, onUpgrade));
     server.paths.set("/version", onVersion);
-
     server.paths.setDefault(onDefault);
+
+    server.setBodyParser(MIME_FORM_MULTIPART, formMultipartParser);
 
     trigger_timer.initializeMs(100, trigger_task).start();
 }

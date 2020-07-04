@@ -7,6 +7,9 @@
 #include "node_register.h"
 //  --------- EXAMPLE CODE -----------
 #include "project/tasks.h"
+#include "rboot.h"
+#include <esp_spi_flash.h>
+#include <Network/RbootHttpUpdater.h>
 
 static void ShowInfo()
 {
@@ -16,7 +19,10 @@ static void ShowInfo()
     Serial.printf("System Chip ID: 0x%x\r\n", system_get_chip_id());
     Serial.printf("SPI Flash ID: 0x%x\r\n", spi_flash_get_id());
     Serial.printf("SPI Flash Size: %d\r\n", (1 << ((spi_flash_get_id() >> 16) & 0xff)));
-    //update_print_config();
+    const rboot_config bootConfig = rboot_get_config();
+    uint8_t currentSlot = bootConfig.current_rom;
+    for (int i = 0; i < 2; i++)
+        Serial.printf("Rom %d, address: %u\n", i, bootConfig.roms[i]);
 }
 
 void onActuate(HttpRequest &request, HttpResponse &response)
