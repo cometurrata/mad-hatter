@@ -1,7 +1,73 @@
 #include "http_client.h"
+#include <MultipartParser.h>
+#include <HttpMultipartResource.h>
+#include <OtaUpgradeStream.h>
+#include <FlashString/Array.hpp>
 
 static HttpServer server;
 static Timer trigger_timer;
+
+IMPORT_FSTR_LOCAL(uploadHtml, PROJECT_DIR "/../common/" UPLOAD_HTML);
+IMPORT_FSTR_LOCAL(submissionHtml, PROJECT_DIR "/../common/" SUBMISSION_HTML);
+
+static void onVersion(HttpRequest &request, HttpResponse &response)
+{
+    debugf("Version: %s", VERSION);
+    response.setCache(86400, true); // It's important to use cache for better performance.
+    response.sendString(VERSION);
+}
+
+static void onOta(HttpRequest &request, HttpResponse &response)
+{
+    auto stream = new FSTR::Stream(submissionHtml);
+    response.setCache(86400, true); // It's important to use cache for better performance.
+    response.sendDataStream(stream, MIME_HTML);
+}
+
+static int onUpgrade(HttpServerConnection &connection, HttpRequest &request, HttpResponse &response)
+{
+    ReadWriteStream *file = request.files["firmware"];
+    OtaUpgradeStream *otaStream = static_cast<OtaUpgradeStream *>(file);
+    debugf("onUpgrade !");
+    if (otaStream == nullptr)
+    {
+        debug_e("Something went wrong with the file upload");
+        return 1;
+    }
+
+    if (response.isSuccess() && !otaStream->hasError())
+    {
+        // defer the reboot by 1000 milliseconds to give time to the web server to return the response
+        System.restart(1000);
+
+        auto stream = new FSTR::Stream(uploadHtml);
+        response.headers[HTTP_HEADER_CONNECTION] = "close";
+        return response.sendDataStream(stream, MIME_HTML);
+    }
+
+    response.code = HTTP_STATUS_BAD_REQUEST;
+    response.setContentType(MIME_HTML);
+    String html = "<H2 color='#444'>" + OtaUpgradeStream::errorToString(otaStream->errorCode) + "</H2>";
+    response.headers[HTTP_HEADER_CONTENT_LENGTH] = html.length();
+    response.sendString(html);
+
+    return 0;
+}
+
+static void fileUploadMapper(HttpFiles &files)
+{
+    /*
+     * On a normal computer file uploads are usually using
+     * temporary space on the hard disk or in memory to store the incoming data.
+     *
+     * On an embedded device that is a luxury that we can hardly afford.
+     * Therefore we should define a `map` that specifies explicitly
+     * by which stream each form field will be consumed.
+     *
+     * If a field is not specified then its content will be discarded.
+     */
+    files["firmware"] = new OtaUpgradeStream;
+}
 
 static void onIndex(HttpRequest &request, HttpResponse &response)
 {
@@ -148,6 +214,9 @@ void startWebServer(void)
     server.paths.set("/write-pin", onWritePin);
     server.paths.set("/add-trigger", onAddTriggerPin);
     server.paths.set("/remove-trigger", onRemoveTriggerPin);
+    server.paths.set("/ota", onOta);
+    server.paths.set("/upgrade", new HttpMultipartResource(fileUploadMapper, onUpgrade));
+    server.paths.set("/version", onVersion);
 
     server.paths.setDefault(onDefault);
 
@@ -159,7 +228,7 @@ void serverAddRoute(String path, HttpPathDelegate callback)
     server.paths.set(path, callback);
 }
 
-void httpServerAddPath(String path, const HttpPathDelegate &callback )
+void httpServerAddPath(String path, const HttpPathDelegate &callback)
 {
     server.paths.set(path, callback);
 }
