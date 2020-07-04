@@ -2,31 +2,11 @@
 ## Parameters configured here will override default and ENV values.
 ## Uncomment and change examples:
 
-# Including board Makefile.
-# include ./Makefile-board.mk
-
-# COMPONENT_CXXFLAGS :=
-# COMPONENT_CXXFLAGS :=
-
-
-SUBMISSION_HTML=\"submission.html\"
-UPLOAD_HTML=\"upload.html\"
-
-COMPONENT_CXXFLAGS += -DSUBMISSION_HTML=$(SUBMISSION_HTML)
-COMPONENT_CXXFLAGS += -DUPLOAD_HTML=$(UPLOAD_HTML)
-
-COMPONENT_CXXFLAGS += -DSERVER_IP=\"192.168.0.101\"
-COMPONENT_CXXFLAGS += -DSERVER_PORT=\"5000\"
 COMPONENT_CXXFLAGS += -DWIFI_SSID=\"WIFI_SSID\"
 COMPONENT_CXXFLAGS += -DWIFI_PASSWORD=\"WIFI_PASSWORD\"
 
 COMPONENT_CXXFLAGS += -DHEARTBEAT_TIME_MS=1000
 ## Add your source directories here separated by space
-
-COMPONENT_SRCDIRS := app app/project ../common
-COMPONENT_SRCFILES :=
-COMPONENT_INCDIRS := ../common
-
 
 ## ESP_HOME sets the path where ESP tools and SDK are located.
 ## Windows:
@@ -52,16 +32,5 @@ COM_SPEED_ESPTOOL  = 1500000 	# Linux
 # COM_SPEED_ESPTOOL  = 115200	# Mac
 COM_SPEED_SERIAL = $(COM_SPEED)
 
-## SPIFFS options
-DISABLE_SPIFFS = 1
-CUSTOM_HEAP = 1
-ENABLE_ESPCONN = 0
-ENABLE_SSL = 0
-# SPIFF_FILES = files
-ARDUINO_LIBRARIES := ArduinoJson5 MultipartParser OtaUpgrade
-
 # # Use minicom as terminal
 # TERMINAL = minicom -D $(COM_PORT) -b $(COM_SPEED_SERIAL) /Volumes/case-sensitive/opt/minicom.config
-
-cleancommon:
-	rm ../common/*.d; rm ../common/*.o
