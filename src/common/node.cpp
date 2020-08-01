@@ -26,8 +26,13 @@ Node &Node::setSolved(bool target)
 
 Node &Node::sendUpdateNow()
 {
-	JsonObjectStream *data = buildJsonStream();
-	serverCommunicator.sendNodeUpdate(data);
+	static time_t lastCall = 0;
+	if (millis() - lastCall > 500)
+	{
+		lastCall = millis();
+		JsonObjectStream *data = buildJsonStream();
+		serverCommunicator.sendNodeUpdate(data);
+	}
 	return *this;
 }
 
