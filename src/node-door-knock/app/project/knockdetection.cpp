@@ -19,7 +19,7 @@ MPU6050 mpu;
 bool IRAM_ATTR doesPatternMatch(uint8_t *targetPattern, uint8_t patternLength,
                                 uint32_t *receivedPattern, uint8_t tolerancePercentage);
 
-void knockDetectionSetup()
+bool knockDetectionSetup()
 {
     Wire.pins(4, 5); // SDA, SCL
 
@@ -30,7 +30,13 @@ void knockDetectionSetup()
     if (!mpu.begin(MPU6050_SCALE_2000DPS, MPU6050_RANGE_2G))
     {
         Serial.println("Failed to communicate with IMU.");
+        pinMode(4, OUTPUT);
+        pinMode(5, OUTPUT);
+        digitalWrite(4, LOW);
+        digitalWrite(5, LOW);
+        return false;
     }
+    return true;
 }
 
 int prevx, prevy, prevz;
@@ -140,7 +146,7 @@ void IRAM_ATTR pushAKnock(uint32_t startTime, uint32_t endTime)
     }
     else
     {
-        if (doesPatternMatch(knockPattern, knockPatternLength - 2, knockArray, 20))
+        if (doesPatternMatch(knockPattern, knockPatternLength - 2, knockArray, 30))
         {
             debugf("Success");
             isKnockDetected = true;
@@ -170,7 +176,7 @@ void IRAM_ATTR pushAKnock(uint32_t startTime, uint32_t endTime)
             }
             Serial.println("");
         }
-        if (doesPatternMatch(knockPattern, knockPatternLength - 2, knockArray, 20))
+        if (doesPatternMatch(knockPattern, knockPatternLength - 2, knockArray, 30))
         {
             debugf("Success");
             isKnockDetected = true;
@@ -220,20 +226,27 @@ uint32_t IRAM_ATTR filter(uint32_t cumAbsDiff, uint16_t oldWeight, uint16_t newA
 
 void IRAM_ATTR knockDetectionInit()
 {
-    knockDetectionSetup();
-    for (int i = 0; i < 6; i++)
+    if (knockDetectionSetup())
+
     {
-        knockArray[i] = 200;
+        for (int i = 0; i < 6; i++)
+        {
+            knockArray[i] = 200;
+        }
+
+        Arduino_Vector a = mpu.readRawAccel();
+
+        prevx = a.XAxis;
+        prevy = a.YAxis;
+        prevz = a.ZAxis;
+
+        procTimer.initializeMs(3, loop).start();
+        debugf("Knock detection initilised");
     }
-
-    Arduino_Vector a = mpu.readRawAccel();
-
-    prevx = a.XAxis;
-    prevy = a.YAxis;
-    prevz = a.ZAxis;
-
-    procTimer.initializeMs(3, loop).start();
-    debugf("Knock detection initilised");
+    else
+    {
+        procTimer.initializeMs(3, knockDetectionInit).start();
+    }
 }
 
 bool getKnockDetected()
