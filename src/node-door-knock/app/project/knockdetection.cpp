@@ -204,15 +204,21 @@ bool IRAM_ATTR doesPatternMatch(uint8_t *targetPattern, uint8_t patternLength,
     {
         uint32_t highTol = applyPercentage((targetPattern[i] * receivedPattern[0]) / targetPattern[0], tolerancePercentage);
         uint32_t lowTol = applyPercentage((targetPattern[i] * receivedPattern[0]) / targetPattern[0], -tolerancePercentage);
-        Serial.printf("%d:\t[%d,\t%d] -> %d\n", i, lowTol, highTol, receivedPattern[i]);
+        Serial.printf("%d:\t[%d,\t%d] -> %d", i, lowTol, highTol, receivedPattern[i]);
 
         if (receivedPattern[i] > highTol)
         {
+            Serial.print("\tFAIL\n");
             ret = false;
         }
-        if (receivedPattern[i] < lowTol)
+        else if (receivedPattern[i] < lowTol)
         {
+            Serial.print("\tFAIL\n");
             ret = false;
+        }
+        else
+        {
+            Serial.print("\tOK\n");
         }
     }
     return ret;
