@@ -126,7 +126,7 @@ void IRAM_ATTR pushEvent(bool knocking)
     }
 }
 
-uint8_t knockPattern[10] = {20, 10, 10, 10, 10, 10, 10};
+uint8_t knockPattern[10] = {100, 50, 50, 100, 200, 100}; // A Shave and a haircut two bits
 uint8_t knockPatternLength = 7;
 uint8_t knockIndex = 0;
 uint32_t knockArray[7];
