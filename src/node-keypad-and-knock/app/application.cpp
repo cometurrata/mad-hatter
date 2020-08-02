@@ -26,8 +26,9 @@ static void ShowInfo()
 void onActuate(HttpRequest &request, HttpResponse &response)
 {
     debugf("onActuate\n");
-    uint16_t pattern[] = {500, 250, 250, 250, 250};
-    patternKnocker.setPattern(pattern, 5);
+    // {2, 1, 1, 2, 4, 2}
+    uint16_t pattern[] = {400, 200, 200, 400, 800, 400};
+    patternKnocker.setPattern(pattern, 6);
     patternKnocker.run();
     response.code = HTTP_STATUS_OK;
     response.sendString("OK");
