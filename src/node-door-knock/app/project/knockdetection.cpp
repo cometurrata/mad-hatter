@@ -250,11 +250,23 @@ void IRAM_ATTR knockDetectionInit()
     }
     else
     {
-        procTimer.initializeMs(3, knockDetectionInit).start();
+        static int count = 0;
+        count++;
+        if (count < 1000)
+        {
+            procTimer.initializeMs(3, knockDetectionInit).start();
+        }
+        else
+        {
+            System.restart();
+            while (true)
+            {
+            }
+        }
     }
 }
 
-bool getKnockDetected()
-{
-    return isKnockDetected;
-}
+    bool getKnockDetected()
+    {
+        return isKnockDetected;
+    }
