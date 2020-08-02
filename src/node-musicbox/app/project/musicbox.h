@@ -17,7 +17,7 @@ private:
     Timer procTimer;
     bool done = false;
 
-    uint8_t melody[3] = {DO, RE, NOTE_MAX};
+    uint8_t melody[8] = {DO2, SOL, SOL, LA, SOL, SI, DO2, NOTE_MAX};
     uint8_t nextNoteIdx = 0;
 
     char descriptions[18][10] = {"DO", "DO_SHARP", "RE", "RE_SHARP", "MI", "MI_SHARP", "FA", "FA_SHARP", "SOL", "SOL_SHARP", "LA", "LA_SHARP", "SI", "SI_SHARP", "DO2", "DO2_SHARP", "NOTE_MAX"};
