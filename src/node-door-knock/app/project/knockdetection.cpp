@@ -45,7 +45,7 @@ uint32_t filteredValue = 0;
 uint32_t presentWeight = 4;
 uint32_t pastWeight = 7;
 uint32_t thresholdHigh = 4000;
-uint32_t thresholdLow = 400;
+uint32_t thresholdLow = 1000;
 
 bool isKnockDetected = false;
 
@@ -126,7 +126,7 @@ void IRAM_ATTR pushEvent(bool knocking)
     }
 }
 
-uint8_t knockPattern[10] = {100, 50, 50, 100, 200, 100}; // A Shave and a haircut two bits
+uint8_t knockPattern[10] = {2, 1, 1, 2, 4, 2}; // A Shave and a haircut two bits
 uint8_t knockPatternLength = 7;
 uint8_t knockIndex = 0;
 uint32_t knockArray[7];
@@ -146,7 +146,7 @@ void IRAM_ATTR pushAKnock(uint32_t startTime, uint32_t endTime)
     }
     else
     {
-        if (doesPatternMatch(knockPattern, knockPatternLength - 2, knockArray, 30))
+        if (doesPatternMatch(knockPattern, knockPatternLength - 1, knockArray, 30))
         {
             debugf("Success");
             isKnockDetected = true;
@@ -161,22 +161,23 @@ void IRAM_ATTR pushAKnock(uint32_t startTime, uint32_t endTime)
             tmpStartTime = startTime;
 
             Serial.println("");
+            Serial.print("Got: ");
 
-            for (int i = 0; i < knockPatternLength - 2; i++)
+            for (int i = 0; i < knockPatternLength - 1; i++)
             {
                 Serial.print(knockArray[i]);
                 Serial.print(", ");
             }
             Serial.println("");
-            for (int i = 0; i < knockPatternLength - 2; i++)
+            Serial.print("Tgt: ");
+            for (int i = 0; i < knockPatternLength - 1; i++)
             {
-                uint32_t unit = knockArray[0] / knockPattern[0];
-                Serial.print(knockPattern[i] * unit);
+                Serial.print((knockPattern[i] * knockArray[0]) / knockPattern[0]);
                 Serial.print(", ");
             }
             Serial.println("");
         }
-        if (doesPatternMatch(knockPattern, knockPatternLength - 2, knockArray, 30))
+        if (doesPatternMatch(knockPattern, knockPatternLength - 1, knockArray, 30))
         {
             debugf("Success");
             isKnockDetected = true;
@@ -198,25 +199,23 @@ bool IRAM_ATTR doesPatternMatch(uint8_t *targetPattern, uint8_t patternLength,
         return true;
     }
 
+    bool ret = true;
     for (int i = 0; i < patternLength; i++)
     {
-        if (targetPattern[i] * unit < receivedPattern[i])
-        {
+        uint32_t highTol = applyPercentage((targetPattern[i] * receivedPattern[0]) / targetPattern[0], tolerancePercentage);
+        uint32_t lowTol = applyPercentage((targetPattern[i] * receivedPattern[0]) / targetPattern[0], -tolerancePercentage);
+        Serial.printf("%d:\t[%d,\t%d] -> %d\n", i, lowTol, highTol, receivedPattern[i]);
 
-            if (applyPercentage(targetPattern[i] * unit, tolerancePercentage) < receivedPattern[i])
-            {
-                return false;
-            }
-        }
-        if (targetPattern[i] * unit > receivedPattern[i])
+        if (receivedPattern[i] > highTol)
         {
-            if (applyPercentage(targetPattern[i] * unit, -tolerancePercentage) > receivedPattern[i])
-            {
-                return false;
-            }
+            ret = false;
+        }
+        if (receivedPattern[i] < lowTol)
+        {
+            ret = false;
         }
     }
-    return true;
+    return ret;
 }
 
 uint32_t IRAM_ATTR filter(uint32_t cumAbsDiff, uint16_t oldWeight, uint16_t newAbsDiff)
