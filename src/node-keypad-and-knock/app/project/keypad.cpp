@@ -125,6 +125,10 @@ void PasswordValidator::pushFigure(int figure)
     {
         passwordIdx++;
     }
+    else
+    {
+        passwordIdx = 0;
+    }
 
     if (passwordIdx >= sizeof(password))
     {
