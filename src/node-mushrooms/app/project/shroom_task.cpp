@@ -46,7 +46,8 @@ Shroom shroom4;
 #include "tasks.h"
 
 static int combinaisonIndex = 0;
-static uint8_t combinaison[5] = {1, 2, 3, 4, 3};
+                                // Purple green red blue red
+static uint8_t combinaison[5] = {   1,      2,   3,  4,  3};
 
 void checkCombinaison(int id)
 {
