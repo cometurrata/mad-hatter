@@ -12,6 +12,7 @@ void sensorTask()
 {
     if (MusicBox.isMelodyCorrect())
     {
+        Serial.println("Melody is solved !!");
         musicBoxNode.setSolved(true).sendUpdateNow();
     }
 }
@@ -19,5 +20,5 @@ void sensorTask()
 void nodeMusicBoxInit(void)
 {
     MusicBox.init();
-    sensorTimer.initializeMs(3 * 1000, sensorTask).start();
+    sensorTimer.initializeMs(200, sensorTask).start();
 }

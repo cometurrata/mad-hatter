@@ -22,21 +22,23 @@ void MusicBoxClass::task()
             Serial.printf("%s\n", descriptions[note]);
             if (note == melody[nextNoteIdx])
             {
+                Serial.println("Note is correct!");
                 nextNoteIdx++;
             }
             else if (note >= 1)
             {
                 if (note != melody[nextNoteIdx - 1])
                 {
+                    Serial.println("Note is bad... Reset!");
                     nextNoteIdx = 0;
                 }
             }
         }
     }
 
-    if (nextNoteIdx == NOTE_MAX)
+    if (melody[nextNoteIdx] == NOTE_MAX)
     {
-        Serial.println("done");
+        Serial.println("Done successfully !");
         done = true;
     }
 }
