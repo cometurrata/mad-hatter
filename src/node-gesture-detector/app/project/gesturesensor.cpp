@@ -80,7 +80,8 @@ void GestureSensorClass::showGestureDirectionForDuration(Gesture_t gesture, uint
 
     showGestureDirectionTimer.initializeMs(timeout, cb).startOnce();
     int ledId = ledIdForGestureDirection(gesture);
-    if (ledId >= 0) {
+    if (ledId >= 0)
+    {
         ledController->turnOn(ledId);
     }
 }
