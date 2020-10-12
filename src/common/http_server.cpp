@@ -228,6 +228,7 @@ void startWebServer(void)
     server.paths.set("/ota", onOta);
     server.paths.set("/upgrade", new HttpMultipartResource(fileUploadMapper, onUpgrade));
     server.paths.set("/version", onVersion);
+    server.setBodyParser(MIME_JSON, bodyToStringParser);
     server.paths.setDefault(onDefault);
 
     server.setBodyParser(MIME_FORM_MULTIPART, formMultipartParser);
