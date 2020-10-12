@@ -21,10 +21,25 @@ static void ShowInfo()
     Serial.printf("SPI Flash Size: %d\r\n", (1 << ((spi_flash_get_id() >> 16) & 0xff)));
     //update_print_config();
 }
+
+Timer restartTimer;
+
+void onActuate(HttpRequest &request, HttpResponse &response)
+{
+    restartTimer.initializeMs(1000, TimerDelegate([] { 
+        System.restart();
+        WDT.alive();
+        delay(2000);
+    })
+    ).startOnce();
+    response.sendString("OK");
+}
+
 void onWifiOk()
 {
     Serial.print(_F("I'm CONNECTED to "));
     debugf("AP. ip: %s mac: %s hostname: %s", WifiStation.getIP().toString().c_str(), WifiStation.getMAC().c_str(), WifiStation.getHostname().c_str());
+    serverAddRoute("/actuate", onActuate);
     startWebServer();
 }
 
@@ -43,6 +58,7 @@ static void ready()
     Wifi.setOnConnectUserCb(onWifiOk);
 
     nodeGestureDetector.addNodeType(Node::NodeTypeEnum::SENSOR_)
+        .addNodeType(Node::NodeTypeEnum::ACTUATOR_)
         .setHostname(NODE_HOSTNAME)
         .start();
 
