@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SmingCore.h>
-
+#include <Libraries/Adafruit_NeoPixel/Adafruit_NeoPixel.h>
 #include <Libraries/SparkFun_APDS9960/SparkFun_APDS9960.h>
 #include "ledcontroller.h"
 #include "ui_controller.h"

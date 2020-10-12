@@ -4,6 +4,8 @@ PROJECT_PATH =  $(mkfile_dir)/..
 
 include $(PROJECT_PATH)/common.mk
 
+ARDUINO_LIBRARIES += Adafruit_NeoPixel
+
 NODE_HOSTNAME=\"gesture-sensor\"
 COMPONENT_CXXFLAGS += -DNODE_HOSTNAME=$(NODE_HOSTNAME)
 
