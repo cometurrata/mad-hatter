@@ -17,14 +17,18 @@ void setDrawerClosed()
 void setDrawerOpen()
 {
     digitalWrite(0, OPEN);
-    delayDrawerOpenTimer.initializeMs(30000, &setDrawerClosed).startOnce();
+    // Set drawer open for 5 minutes
+    time_t _5_minutes = 5 * 60 * 1000;
+    delayDrawerOpenTimer.initializeMs(_5_minutes, &setDrawerClosed).startOnce();
 }
 
+
+// setDrawer Open for 10 seconds at boot
 void drawerInit()
 {
     pinMode(0, OUTPUT);
     digitalWrite(0, OPEN);
 
-    // setDrawer Open for 10 seconds at boot
-    delayDrawerOpenTimer.initializeMs(10000, &setDrawerClosed).startOnce();
+    time_t _10_seconds = 10 * 1000;
+    delayDrawerOpenTimer.initializeMs(_10_seconds, &setDrawerClosed).startOnce();
 }
