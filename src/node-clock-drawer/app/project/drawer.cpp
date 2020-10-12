@@ -17,7 +17,9 @@ void setDrawerClosed()
 void setDrawerOpen()
 {
     digitalWrite(0, OPEN);
-    delayDrawerOpenTimer.initializeMs(30000, &setDrawerClosed).startOnce();
+    // Set drawer open for 5 minutes
+    time_t _5_minutes = 5 * 60 * 1000;
+    delayDrawerOpenTimer.initializeMs(_5_minutes, &setDrawerClosed).startOnce();
 }
 
 void drawerInit()
