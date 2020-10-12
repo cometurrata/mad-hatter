@@ -1,6 +1,8 @@
 #include "knocker.h"
 
 KnockerClass Knocker;
+PatternKnocker patternKnocker;
+
 //                                                0  1  2  3  4  5  6  7  8  9
 const uint8_t KnockerClass::knockPerFigure[10] = {4, 0, 3, 0, 2, 0, 0, 0, 1, 0};
 
@@ -73,6 +75,14 @@ void PatternKnocker::task()
         patternTimer.initializeMs(pattern[patternIndex], std::bind(&PatternKnocker::task, this)).startOnce();
         patternIndex++;
     }
+    else
+    {
+        if (onDoneUserCb)
+        {
+            onDoneUserCb();
+        }
+    }
+    
 }
 
 void PatternKnocker::setPattern(uint16_t *targetPattern, int patternLen)
@@ -93,4 +103,10 @@ void PatternKnocker::run()
     digitalWrite(14, LOW);
     patternIndex = 0;
     task();
+}
+
+
+void PatternKnocker::setOnDoneUserCallback(std::function<void()> cb)
+{
+    onDoneUserCb = cb;
 }

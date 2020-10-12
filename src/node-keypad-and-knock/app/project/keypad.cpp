@@ -1,5 +1,6 @@
 #include "keypad.h"
 #include "tasks.h"
+#include "knocker.h"
 
 KeyPadClass KeyPad;
 
@@ -46,7 +47,13 @@ void Key::init()
 
 bool Key::isReleased()
 {
-    return (wasPushed && !debouncer.getIsPushed());
+    if (wasPushed && !debouncer.getIsPushed())
+    {
+        Serial.printf("!! %d pressed !! \n", figure);
+        return true;
+    }
+    return false;
+
 }
 
 void Key::setFigure(int figure)
@@ -106,12 +113,27 @@ void KeyPadClass::newUserInput(int figure)
     if (passwordValidator.getIsCorrect())
     {
         nodeKeyPadAndKnock.setSolved(true).sendUpdateNow();
+        uint16_t pattern[] = {400, 200, 200, 400, 800, 400};
+        patternKnocker.setPattern(pattern, 6);
+        patternKnocker.run();
+        patternKnocker.setOnDoneUserCallback(std::bind(&KeyPadClass::reset, &KeyPad));
     }
+}
+
+void KeyPadClass::reset()
+{
+    passwordValidator.reset();
 }
 
 void PasswordValidator::setPassword(uint8_t password[4])
 {
     memcpy(this->password, password, 4);
+}
+
+void PasswordValidator::reset()
+{
+    isCorrect = false;
+    passwordIdx = 0;
 }
 
 void PasswordValidator::pushFigure(int figure)

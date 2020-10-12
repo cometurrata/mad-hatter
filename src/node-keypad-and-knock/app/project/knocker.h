@@ -33,6 +33,7 @@ class PatternKnocker
 public:
     void setPattern(uint16_t *pattern, int patternLen);
     void run();
+    void setOnDoneUserCallback(std::function<void()> userCb);
 
 private:
     void knockNow();
@@ -44,6 +45,9 @@ private:
     Vector<uint16_t> pattern;
     Timer releaseTimer;
     Timer patternTimer;
+
+    std::function<void()> onDoneUserCb = nullptr;
 };
 
 extern KnockerClass Knocker;
+extern PatternKnocker patternKnocker;

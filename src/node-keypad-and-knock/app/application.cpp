@@ -10,8 +10,6 @@
 #include "project/keypad.h"
 #include "project/knocker.h"
 
-static PatternKnocker patternKnocker;
-
 static void ShowInfo()
 {
     Serial.printf("\r\nSDK: v%s\r\n", system_get_sdk_version());
@@ -25,11 +23,27 @@ static void ShowInfo()
 
 void onActuate(HttpRequest &request, HttpResponse &response)
 {
-    debugf("onActuate\n");
-    // {2, 1, 1, 2, 4, 2}
-    uint16_t pattern[] = {400, 200, 200, 400, 800, 400};
-    patternKnocker.setPattern(pattern, 6);
+    uint16_t pattern[10] = {400, 200, 200, 400, 800, 400};
+    int patternSize = 6;
+
+    debugf("Request:");
+    debugf("%s \n",request.toString().c_str());
+    if (request.getBody() != nullptr)
+    {
+        StaticJsonBuffer<200> jsonBuffer;
+        JsonObject &root = jsonBuffer.parseObject(request.getBody());
+        root.prettyPrintTo(Serial);
+        patternSize = root["pattern"].size();
+        for (int i = 0; i < std::min(patternSize, 6); i++)
+        {
+            pattern[i] = root["pattern"][i];
+        }
+    }
+    
+    debugf("onActuate Here\n");
+    patternKnocker.setPattern(pattern, patternSize);
     patternKnocker.run();
+    patternKnocker.setOnDoneUserCallback(std::bind(&KeyPadClass::reset, &KeyPad));
     response.code = HTTP_STATUS_OK;
     response.sendString("OK");
 }

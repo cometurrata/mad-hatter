@@ -48,6 +48,7 @@ class KeyPadClass
 public:
     void init();
     void newUserInput(int figure);
+    void reset();
 
 private:
     void task();
