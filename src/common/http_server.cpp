@@ -201,6 +201,11 @@ static void onReboot(HttpRequest &request, HttpResponse &response)
     response.code = HTTP_STATUS_OK;
 
     System.restart();
+    while(true)
+    {
+        WDT.alive();
+        delay(100);
+    }
 }
 
 static void onDefault(HttpRequest &request, HttpResponse &response)
