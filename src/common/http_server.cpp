@@ -195,17 +195,13 @@ void onRemoveTriggerPin(HttpRequest &request, HttpResponse &response)
     }
 }
 
+static Timer t2;
+
 static void onReboot(HttpRequest &request, HttpResponse &response)
 {
     debugf("Received reboot command");
     response.code = HTTP_STATUS_OK;
-
-    System.restart();
-    while(true)
-    {
-        WDT.alive();
-        delay(100);
-    }
+    t2.initializeMs(1, TimerDelegate([] { system_restart(); delay(1000); })).startOnce();
 }
 
 static void onDefault(HttpRequest &request, HttpResponse &response)
