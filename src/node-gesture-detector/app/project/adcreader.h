@@ -10,14 +10,32 @@ public:
     uint16_t getLastVal();
 };
 
+class Debouncer
+{
+private:
+    Timer timeoutTimer_;
+    time_t timeoutDuration_ = 70;
+    bool shouldIgnoreValue_ = false;
+
+    void timeoutCallback_();
+
+public:
+    void setTimeout(time_t timeout);
+    void toggling();
+    bool shouldIgnoreValue();
+};
+
 class AdcReaderHysteresisPoller
 {
+private:
     AdcReader adc;
+    Debouncer debouncer_;
     Timer pollTimer;
     time_t period_ = 20;
+    time_t debouncerDelay_ = 50;
 
-    const uint16_t hysteresisLowLevel = 200;
-    const uint16_t hysteresisHighLevel = 800;
+    uint16_t hysteresisLowLevel = 200;
+    uint16_t hysteresisHighLevel = 800;
 
     Delegate<void()> onHighUserCb = nullptr;
     Delegate<void()> onLowUserCb = nullptr;
