@@ -2,8 +2,22 @@
 
 #include "node.h"
 
-void nodeLightRoomInit(void);
-void lightAcuate(void);
+class NodeLightRoomClass: public Node
+{
+private:
+    static const int ON;
+    static const int OFF;
+    int pinStatus = NodeLightRoomClass::OFF;
+    int lightGpio_ = 5;
 
-extern Node NodeLightRoom;
+private:
+    int toggle();
+    int turnOn();
+    int turnOff();
 
+public:
+    void init();
+    void actuate();
+};
+
+extern NodeLightRoomClass NodeLightRoom;

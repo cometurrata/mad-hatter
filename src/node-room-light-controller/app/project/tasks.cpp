@@ -4,31 +4,23 @@
 #include "http_client.h"
 #include "tasks.h"
 
-#define ON HIGH
-#define OFF LOW
+const int NodeLightRoomClass::ON = HIGH;
+const int NodeLightRoomClass::OFF = LOW;
 
-Node NodeLightRoom;
+NodeLightRoomClass NodeLightRoom;
 
-static int pinStatus = OFF;
-static int toggle();
-static int turnOn();
-static int turnOff();
-
-
-void nodeLightRoomInit()
+void NodeLightRoomClass::init()
 {
-	pinMode(2, OUTPUT);
-	pinMode(5, OUTPUT);
-	digitalWrite(2, HIGH);
-	digitalWrite(5, OFF);
+	pinMode(lightGpio_, OUTPUT);
+	digitalWrite(lightGpio_, OFF);
 }
 
-void lightAcuate()
+void NodeLightRoomClass::actuate()
 {
 	toggle();
 }
 
-static int toggle()
+int NodeLightRoomClass::toggle()
 {
 	if (pinStatus == ON)
 	{
@@ -38,20 +30,18 @@ static int toggle()
 	return turnOn();
 }
 
-static int turnOn()
+int NodeLightRoomClass::turnOn()
 {
 	debugf("turnOn\n");
 	pinStatus = ON;
-	digitalWrite(2, pinStatus);
-	digitalWrite(5, pinStatus);
+	digitalWrite(lightGpio_, pinStatus);
 	return pinStatus;
 }
 
-static int turnOff()
+int NodeLightRoomClass::turnOff()
 {
 	debugf("turnOff\n");
 	pinStatus = OFF;
-	digitalWrite(2, pinStatus);
-	digitalWrite(5, pinStatus);
+	digitalWrite(lightGpio_, pinStatus);
 	return pinStatus;
 }

@@ -28,7 +28,7 @@ static void ShowInfo()
 void onActuate(HttpRequest &request, HttpResponse &response)
 {
     debugf("onActuate\n");
-    lightAcuate();
+    NodeLightRoom.actuate();
 
     response.code = HTTP_STATUS_OK;
     response.sendString("OK");
@@ -58,7 +58,7 @@ static void ready()
         .setHostname(NODE_HOSTNAME)
         .start();
 
-    nodeLightRoomInit();
+    NodeLightRoom.init();
 }
 
 void init()
