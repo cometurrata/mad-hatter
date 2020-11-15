@@ -16,16 +16,17 @@ uint16_t AdcReader::getLastVal()
     return last_value_;
 }
 
-void AdcReaderHysteresisPoller::start()
+void AdcReaderHysteresisPoller::start(time_t period /* = 20 */)
 {
-    pollTimer.initializeMs(period, std::bind(&AdcReaderHysteresisPoller::readAdc, this));
+    this->period_ = period;
+    pollTimer.initializeMs(period_, std::bind(&AdcReaderHysteresisPoller::readAdc, this));
 }
 
 void AdcReaderHysteresisPoller::readAdc()
 {
-    adc.read();
+    uint16_t adcVal = adc.read();
 
-    if (adc.getLastVal() <= hysteresisLowLevel)
+    if (adcVal <= hysteresisLowLevel)
     {
         if (lastDigital_ != LOW &&
             onLowUserCb != nullptr)
@@ -34,8 +35,7 @@ void AdcReaderHysteresisPoller::readAdc()
         }
         lastDigital_ = LOW;
     }
-
-    if (adc.getLastVal() >= hysteresisHighLevel)
+    else if (adcVal >= hysteresisHighLevel)
     {
         if (lastDigital_ != HIGH &&
             onHighUserCb != nullptr)

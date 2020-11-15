@@ -14,7 +14,7 @@ class AdcReaderHysteresisPoller
 {
     AdcReader adc;
     Timer pollTimer;
-    time_t period = 100;
+    time_t period_ = 20;
 
     const uint16_t hysteresisLowLevel = 200;
     const uint16_t hysteresisHighLevel = 800;
@@ -27,7 +27,7 @@ class AdcReaderHysteresisPoller
     uint16_t lastDigital_;
 
 public:
-    void start();
+    void start(time_t period = 20);
     void setHysteresisHighLevel(uint16_t highLevel = 800);
     void setHysteresisLowLevel(uint16_t lowLevel = 200);
     uint16_t getDigital();
