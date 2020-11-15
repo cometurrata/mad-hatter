@@ -27,12 +27,12 @@ Timer restartTimer;
 
 void onActuate(HttpRequest &request, HttpResponse &response)
 {
-    restartTimer.initializeMs(1000, TimerDelegate([] { 
-        System.restart();
-        WDT.alive();
-        delay(2000);
-    })
-    ).startOnce();
+    restartTimer.initializeMs(1000, TimerDelegate([] {
+                                  System.restart();
+                                  WDT.alive();
+                                  delay(2000);
+                              }))
+        .startOnce();
     response.sendString("OK");
 }
 
