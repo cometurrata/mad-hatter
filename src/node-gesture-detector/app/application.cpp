@@ -63,8 +63,14 @@ static void ready()
         .setHostname(NODE_HOSTNAME)
         .start();
 
+    nodeLightSwitchSensor.addNodeType(Node::NodeTypeEnum::SENSOR_)
+        .setHostname("light-switch-sensor")
+        .start();
+
     ledController.init();
     GestureSensor.init(&ledController);
+
+    Switch.init(&nodeLightSwitchSensor);
 }
 
 void init()
