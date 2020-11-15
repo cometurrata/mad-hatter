@@ -4,3 +4,4 @@
 #include "http_client.h"
 
 Node nodeGestureDetector;
+Node nodeLightSwitchSensor;

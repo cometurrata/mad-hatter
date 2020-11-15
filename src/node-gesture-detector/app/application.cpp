@@ -8,6 +8,7 @@
 //  --------- EXAMPLE CODE -----------
 #include "project/gesturesensor.h"
 #include "project/tasks.h"
+#include "project/switch.h"
 
 static LedController ledController;
 

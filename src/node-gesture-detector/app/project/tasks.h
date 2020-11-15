@@ -2,3 +2,4 @@
 #include "node.h"
 
 extern Node nodeGestureDetector;
+extern Node nodeLightSwitchSensor;
