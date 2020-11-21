@@ -4,5 +4,7 @@
 */.cproject
 .vscode
 node_fw/out
+*.key
+
 
 http_server/__pycache__
