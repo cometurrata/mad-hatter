@@ -12,6 +12,9 @@ public:
 
 class Debouncer
 {
+    /*
+    * Debouncer introduces a delay on value toggling so it cannot toggle faster than 50ms
+    */
 private:
     Timer timeoutTimer_;
     time_t timeoutDuration_ = 70;
@@ -27,6 +30,10 @@ public:
 
 class AdcReaderHysteresisPoller
 {
+    /* 
+    * Fetches ADC data every period (default=20ms)
+    */
+
 private:
     AdcReader adc;
     Debouncer debouncer_;
