@@ -142,21 +142,12 @@ exit:
     startGesturePollingTimer();
 }
 
-Timer colorTimer;
-
-Adafruit_NeoPixel *pixel;
-
 void GestureSensorClass::init(LedController *ledController)
 {
-    pixel = new Adafruit_NeoPixel(1, 0, NEO_GRB + NEO_KHZ800);
-    pixel->begin();
-    auto cb = TimerDelegate([] {
-                  pixel->setPixelColor(0, Adafruit_NeoPixel::Color(10, 10, 10));
-                  pixel->show();
-                  });
-    colorTimer.initializeMs(500, cb).startOnce();
     this->ledController = ledController;
     Wire.pins(5, 4); // SDA, SCL
+    Wire.begin();
+
     uiController.init(ledController);
 
     // Initialize APDS-9960 (configure I2C and initial values)
