@@ -1,4 +1,4 @@
-#include "switch.h"
+#include "lightswitch.h"
 
 #define ON HIGH
 #define OFF LOW
