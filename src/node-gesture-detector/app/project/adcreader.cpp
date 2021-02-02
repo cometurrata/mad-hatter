@@ -19,7 +19,7 @@ uint16_t AdcReader::getLastVal()
 void AdcReaderHysteresisPoller::start(time_t period /* = 20 */)
 {
     this->period_ = period;
-    pollTimer.initializeMs(period_, std::bind(&AdcReaderHysteresisPoller::readAdc, this));
+    pollTimer.initializeMs(period_, std::bind(&AdcReaderHysteresisPoller::readAdc, this)).start();
 }
 
 void AdcReaderHysteresisPoller::readAdc()
