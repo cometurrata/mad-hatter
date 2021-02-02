@@ -8,7 +8,15 @@ Node &Node::addNodeType(NodeTypeEnum type)
 
 Node &Node::start()
 {
-    heartbeatTimer.initializeMs(HEARTBEAT_TIME_MS,std::bind(&Node::sendUpdateNow, this)).start();
+	debugf("STARTING NODE!");
+	if (false == types.contains(NodeTypeEnum::SWITCH_))
+	{
+		// SWITCH_ nodes !! should not have an HEART_BEAT !!!
+		heartbeatTimer.initializeMs(
+						  HEARTBEAT_TIME_MS,
+						  std::bind(&Node::sendUpdateNow, this))
+			.start();
+	}
 	return *this;
 }
 
