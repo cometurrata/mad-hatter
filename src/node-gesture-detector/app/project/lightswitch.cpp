@@ -10,12 +10,12 @@ void SwitchClass::onAdcToggleCb_()
     if (adcPoller_.getDigital() == ON)
     {
         debugf("Switch detected ON");
-        sensorNode_->setSolved(true);
+        sensorNode_->setIsOn(true);
     }
     else if (adcPoller_.getDigital() == OFF)
     {
         debugf("Switch detected OFF");
-        sensorNode_->setSolved(false);
+        sensorNode_->setIsOn(false);
     }
     sensorNode_->sendUpdateNow();
 }
