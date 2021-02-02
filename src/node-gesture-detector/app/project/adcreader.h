@@ -41,8 +41,8 @@ private:
     time_t period_ = 20;
     time_t debouncerDelay_ = 50;
 
-    uint16_t hysteresisLowLevel = 200;
-    uint16_t hysteresisHighLevel = 800;
+    uint16_t hysteresisLowLevel = 50;
+    uint16_t hysteresisHighLevel = 200;
 
     Delegate<void()> onHighUserCb = nullptr;
     Delegate<void()> onLowUserCb = nullptr;
