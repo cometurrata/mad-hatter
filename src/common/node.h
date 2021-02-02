@@ -19,6 +19,7 @@ public:
 	Node &setHostname(String target);
 	Node &sendUpdateNow();
 	Node &setSolved(bool target);
+	Node &setIsOn(bool is_on);
 
 private:
 	ServerCommunicator serverCommunicator;
@@ -26,6 +27,7 @@ private:
 	Vector<enum Node::NodeTypeEnum> types;
 	String hostname = "";
 	bool solved = false;
+	bool is_on = false;
 	Timer heartbeatTimer;
 	JsonObjectStream *buildJsonStream();
 };

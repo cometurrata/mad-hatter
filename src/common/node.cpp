@@ -32,6 +32,12 @@ Node &Node::setSolved(bool target)
 	return *this;
 }
 
+Node &Node::setIsOn(bool is_on)
+{
+	this->is_on = true;
+	return *this;
+}
+
 Node &Node::sendUpdateNow()
 {
 	static time_t lastCall = 0;
@@ -68,6 +74,7 @@ JsonObjectStream *Node::buildJsonStream()
 
 		case Node::NodeTypeEnum::SWITCH_:
 			types.add("switch");
+			json["is_on"] = is_on;
 			break;
 
 		default:
