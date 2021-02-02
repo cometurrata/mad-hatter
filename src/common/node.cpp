@@ -61,10 +61,15 @@ JsonObjectStream *Node::buildJsonStream()
 		case Node::NodeTypeEnum::ACTUATOR_:
 			types.add("actuator");
 			break;
-		
+
 		case Node::NodeTypeEnum::SENSOR_:
 			types.add("sensor");
 			break;
+
+		case Node::NodeTypeEnum::SWITCH_:
+			types.add("switch");
+			break;
+
 		default:
 			break;
 		}

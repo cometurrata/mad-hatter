@@ -4,12 +4,14 @@
 #include <JsonObjectStream.h>
 #include "http_client.h"
 
-class Node{
+class Node
+{
 public:
-
-	enum NodeTypeEnum{
-		ACTUATOR_=0,
-		SENSOR_
+	enum NodeTypeEnum
+	{
+		ACTUATOR_ = 0,
+		SENSOR_,
+		SWITCH_
 	};
 
 	Node &start();
