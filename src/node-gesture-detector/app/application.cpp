@@ -63,7 +63,7 @@ static void ready()
         .setHostname(NODE_HOSTNAME)
         .start();
 
-    nodeLightSwitchSensor.addNodeType(Node::NodeTypeEnum::SENSOR_)
+    nodeLightSwitchSensor.addNodeType(Node::NodeTypeEnum::SWITCH_)
         .setHostname("light-switch-sensor")
         .start();
 
